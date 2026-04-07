@@ -75,6 +75,17 @@
   .tag-btn:hover { border-color: #555; color: #ccc; }
   .tag-btn.active { background: #fff; color: #000; border-color: #fff; }
 
+  .sort-select {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+    padding: 9px 14px;
+    color: #888;
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+  }
+
   .add-btn {
     padding: 9px 18px;
     background: #fff;
@@ -266,6 +277,12 @@
     justify-content: space-between;
   }
 
+  .card-tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
   .card-tag {
     padding: 3px 10px;
     border-radius: 20px;
@@ -349,6 +366,10 @@
     <button class="tag-btn" data-tag="NanoBanana">NanoBanana</button>
     <button class="tag-btn" data-tag="클립스튜디오">클립스튜디오</button>
   </div>
+  <select class="sort-select" id="sortSelect">
+    <option value="desc">최신순</option>
+    <option value="asc">오래된순</option>
+  </select>
   <button class="add-btn" onclick="openModal()">+ 링크 추가</button>
 </div>
 
@@ -405,8 +426,8 @@
   const colRef = collection(db, "links");
 
   let links = [];
-  let selectedTag = '전체';
-  let selectedModalTag = '';
+  let selectedTags = new Set();
+  let selectedModalTags = new Set();
   let fetchTimer = null;
   let editId = null;
   let pendingMeta = {};
@@ -445,8 +466,12 @@
   function render() {
     const q = document.getElementById('searchInput').value.toLowerCase();
     const grid = document.getElementById('grid');
-    let filtered = links.filter(l => {
-      const matchTag = selectedTag === '전체' || l.tag === selectedTag;
+    const sortOrder = document.getElementById('sortSelect').value;
+    const sorted = [...links].sort((a, b) => sortOrder === 'asc' ? a.createdAt - b.createdAt : b.createdAt - a.createdAt);
+
+    let filtered = sorted.filter(l => {
+      const linkTags = Array.isArray(l.tags) ? l.tags : (l.tag ? [l.tag] : []);
+      const matchTag = selectedTags.size === 0 || linkTags.some(t => selectedTags.has(t));
       const matchQ = !q || (l.title||'').toLowerCase().includes(q) || (l.url||'').toLowerCase().includes(q);
       return matchTag && matchQ;
     });
@@ -471,7 +496,7 @@
           <div class="card-url">${escHtml(getDomain(l.url))}</div>
           ${l.desc ? `<div class="card-desc">${escHtml(l.desc)}</div>` : ''}
           <div class="card-footer">
-            <span class="card-tag">${escHtml(l.tag || '기타')}</span>
+            <div class="card-tags">${(Array.isArray(l.tags) ? l.tags : (l.tag ? [l.tag] : ['기타'])).map(t => `<span class="card-tag">${escHtml(t)}</span>`).join('')}</div>
             <div class="card-actions">
               <button onclick="window._editLink('${l.id}')">수정</button>
               <button class="del-btn" onclick="window._deleteLink('${l.id}')">삭제</button>
@@ -484,21 +509,39 @@
 
   document.querySelectorAll('.tag-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      selectedTag = btn.dataset.tag;
+      if (btn.dataset.tag === '전체') {
+        selectedTags.clear();
+        document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      } else {
+        document.querySelector('.tag-btn[data-tag="전체"]').classList.remove('active');
+        if (selectedTags.has(btn.dataset.tag)) {
+          selectedTags.delete(btn.dataset.tag);
+          btn.classList.remove('active');
+        } else {
+          selectedTags.add(btn.dataset.tag);
+          btn.classList.add('active');
+        }
+        if (selectedTags.size === 0) {
+          document.querySelector('.tag-btn[data-tag="전체"]').classList.add('active');
+        }
+      }
       render();
     });
   });
 
   document.getElementById('searchInput').addEventListener('input', render);
+  document.getElementById('sortSelect').addEventListener('change', render);
 
   document.querySelectorAll('.modal-tag').forEach(btn => {
     btn.addEventListener('click', () => {
-      selectedModalTag = btn.dataset.tag === selectedModalTag ? '' : btn.dataset.tag;
-      document.querySelectorAll('.modal-tag').forEach(b => {
-        b.classList.toggle('selected', b.dataset.tag === selectedModalTag);
-      });
+      if (selectedModalTags.has(btn.dataset.tag)) {
+        selectedModalTags.delete(btn.dataset.tag);
+        btn.classList.remove('selected');
+      } else {
+        selectedModalTags.add(btn.dataset.tag);
+        btn.classList.add('selected');
+      }
     });
   });
 
@@ -513,17 +556,18 @@
       document.getElementById('urlInput').value = l.url;
       document.getElementById('titleInput').value = l.title;
       document.getElementById('descInput').value = l.desc || '';
-      selectedModalTag = l.tag || '';
+      const existingTags = Array.isArray(l.tags) ? l.tags : (l.tag ? [l.tag] : []);
+      selectedModalTags = new Set(existingTags);
       pendingMeta = { image: l.image };
     } else {
       document.getElementById('urlInput').value = '';
       document.getElementById('titleInput').value = '';
       document.getElementById('descInput').value = '';
-      selectedModalTag = '';
+      selectedModalTags = new Set();
     }
 
     document.querySelectorAll('.modal-tag').forEach(b => {
-      b.classList.toggle('selected', b.dataset.tag === selectedModalTag);
+      b.classList.toggle('selected', selectedModalTags.has(b.dataset.tag));
     });
   };
 
@@ -579,10 +623,11 @@
     saveBtn.textContent = '저장 중...';
 
     try {
+      const tags = [...selectedModalTags];
       if (editId) {
-        await updateDoc(doc(db, "links", editId), { url, title, desc, tag: selectedModalTag, image: pendingMeta.image || '' });
+        await updateDoc(doc(db, "links", editId), { url, title, desc, tags, image: pendingMeta.image || '' });
       } else {
-        await addDoc(colRef, { url, title, desc, tag: selectedModalTag, image: pendingMeta.image || '', createdAt: Date.now() });
+        await addDoc(colRef, { url, title, desc, tags, image: pendingMeta.image || '', createdAt: Date.now() });
       }
       window.closeModal();
     } catch(e) {
