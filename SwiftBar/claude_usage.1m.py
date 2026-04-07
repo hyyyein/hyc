@@ -26,8 +26,8 @@ def load_today_usage():
     session_tokens = 0
     session_start = None
 
-    # 세션 감지용 (최근 1시간)
-    recent_threshold = now.timestamp() - 3600
+    # 세션 감지용 (최근 5시간 - Claude Pro 리셋 주기)
+    recent_threshold = now.timestamp() - 5 * 3600
 
     for f in files:
         try:
@@ -95,27 +95,27 @@ def main():
     total = data["total"]
     session = data["session"]
 
-    # Pro 플랜 5시간 한도: 19,000 토큰
-    LIMIT = 19_000
-    pct = min(int(total / LIMIT * 100), 100)
+    # Pro 플랜 5시간 세션 한도: ~88,000 토큰
+    LIMIT = 88_000
+    session_pct = min(int(session / LIMIT * 100), 100)
 
-    # 퍼센트에 따라 색상 변경
-    if pct >= 80:
+    # 퍼센트에 따라 색상 변경 (현재 세션 기준)
+    if session_pct >= 80:
         color = "#f87171"  # 빨강
-    elif pct >= 50:
+    elif session_pct >= 50:
         color = "#fbbf24"  # 노랑
     else:
         color = "#a78bfa"  # 보라
 
-    # 메뉴바 표시 (첫 줄)
-    print(f"◆ {format_num(total)} ({pct}%) | size=13 color={color}")
+    # 메뉴바 표시 (현재 세션 기준)
+    print(f"◆ {format_num(session)} ({session_pct}%) | size=13 color={color}")
     print("---")
-    print(f"오늘 사용량 | size=12 color=#888888")
+    print(f"현재 세션 (5시간) | size=12 color=#888888")
     print(f"입력: {format_num(data['input'])}  출력: {format_num(data['output'])} | size=12")
     print(f"캐시 읽기: {format_num(data['cache_read'])}  캐시 쓰기: {format_num(data['cache_write'])} | size=12 color=#888888")
     print("---")
-    session_pct = min(int(session / LIMIT * 100), 100)
-    print(f"현재 세션: {format_num(session)} tokens ({session_pct}%) | size=12 color=#34d399")
+    total_pct = min(int(total / LIMIT * 100), 100)
+    print(f"오늘 누적: {format_num(total)} tokens ({total_pct}%) | size=12 color=#60a5fa")
     print("---")
     now_str = datetime.now().strftime("%H:%M 기준")
     print(f"{now_str} | size=11 color=#555555")
