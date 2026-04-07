@@ -506,7 +506,7 @@
           <div class="card-url">${escHtml(getDomain(l.url))}</div>
           ${l.desc ? `<div class="card-desc">${escHtml(l.desc)}</div>` : ''}
           <div class="card-footer">
-            <div class="card-tags">${(Array.isArray(l.tags) ? l.tags : (l.tag ? [l.tag] : ['기타'])).map(t => `<span class="card-tag">${escHtml(t)}</span>`).join('')}${l.author ? `<span style="font-size:11px;color:#ccc;">by ${escHtml(l.author)}</span>` : ''}</div>
+            <div class="card-tags">${(Array.isArray(l.tags) ? l.tags : (l.tag ? [l.tag] : ['기타'])).map(t => `<span class="card-tag">${escHtml(t)}</span>`).join('')}${l.author ? `<span style="font-size:11px;color:#ccc;align-self:center;">by ${escHtml(l.author)}</span>` : ''}</div>
             <div class="card-actions">
               <button onclick="window._editLink('${l.id}')">수정</button>
               <button class="del-btn" onclick="window._deleteLink('${l.id}')">삭제</button>
