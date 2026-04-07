@@ -392,6 +392,8 @@
     <input type="text" id="titleInput" placeholder="제목">
     <label>상세설명 <span style="color:#555;font-size:11px">(선택)</span></label>
     <input type="text" id="descInput" placeholder="짧은 메모...">
+    <label>올린 사람 <span style="color:#555;font-size:11px">(선택)</span></label>
+    <input type="text" id="authorInput" placeholder="닉네임...">
     <label>태그</label>
     <div class="modal-tags">
       <button class="modal-tag" data-tag="AI">AI</button>
@@ -504,7 +506,7 @@
           <div class="card-url">${escHtml(getDomain(l.url))}</div>
           ${l.desc ? `<div class="card-desc">${escHtml(l.desc)}</div>` : ''}
           <div class="card-footer">
-            <div class="card-tags">${(Array.isArray(l.tags) ? l.tags : (l.tag ? [l.tag] : ['기타'])).map(t => `<span class="card-tag">${escHtml(t)}</span>`).join('')}</div>
+            <div class="card-tags">${(Array.isArray(l.tags) ? l.tags : (l.tag ? [l.tag] : ['기타'])).map(t => `<span class="card-tag">${escHtml(t)}</span>`).join('')}${l.author ? `<span style="font-size:11px;color:#555;">by ${escHtml(l.author)}</span>` : ''}</div>
             <div class="card-actions">
               <button onclick="window._editLink('${l.id}')">수정</button>
               <button class="del-btn" onclick="window._deleteLink('${l.id}')">삭제</button>
@@ -564,6 +566,7 @@
       document.getElementById('urlInput').value = l.url;
       document.getElementById('titleInput').value = l.title;
       document.getElementById('descInput').value = l.desc || '';
+      document.getElementById('authorInput').value = l.author || '';
       const existingTags = Array.isArray(l.tags) ? l.tags : (l.tag ? [l.tag] : []);
       selectedModalTags = new Set(existingTags);
       pendingMeta = { image: l.image };
@@ -571,6 +574,7 @@
       document.getElementById('urlInput').value = '';
       document.getElementById('titleInput').value = '';
       document.getElementById('descInput').value = '';
+      document.getElementById('authorInput').value = '';
       selectedModalTags = new Set();
     }
 
@@ -624,6 +628,7 @@
     const url = document.getElementById('urlInput').value.trim();
     const title = document.getElementById('titleInput').value.trim() || getDomain(url);
     const desc = document.getElementById('descInput').value.trim();
+    const author = document.getElementById('authorInput').value.trim();
     if (!url) return;
 
     const saveBtn = document.getElementById('saveBtn');
@@ -633,9 +638,9 @@
     try {
       const tags = [...selectedModalTags];
       if (editId) {
-        await updateDoc(doc(db, "links", editId), { url, title, desc, tags, image: pendingMeta.image || '' });
+        await updateDoc(doc(db, "links", editId), { url, title, desc, author, tags, image: pendingMeta.image || '' });
       } else {
-        await addDoc(colRef, { url, title, desc, tags, image: pendingMeta.image || '', createdAt: Date.now() });
+        await addDoc(colRef, { url, title, desc, author, tags, image: pendingMeta.image || '', createdAt: Date.now() });
       }
       window.closeModal();
     } catch(e) {
