@@ -847,6 +847,107 @@
 
   /* Eye icon */
   .eye-icon { display: inline-flex; align-items: center; gap: 2px; vertical-align: middle; }
+
+  /* ========== NOTICE POPUP ========== */
+  .notice-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(100,150,200,0.45);
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+  }
+  .notice-bg.open { display: flex; }
+
+  .notice-box {
+    background: #f0f8ff;
+    border: 2px solid var(--border-dark);
+    border-radius: 6px;
+    width: 360px;
+    max-width: 92vw;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.12);
+    overflow: hidden;
+  }
+
+  .notice-title {
+    background: var(--header-bg);
+    color: #fff;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 8px 14px;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .notice-body {
+    padding: 16px;
+    font-size: 12px;
+    color: #444;
+    line-height: 1.8;
+  }
+
+  .notice-body .notice-date {
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .notice-body ul {
+    padding-left: 16px;
+  }
+
+  .notice-body li {
+    margin-bottom: 4px;
+  }
+
+  .notice-body li span {
+    background: var(--sky-pale);
+    color: var(--sky);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 1px 5px;
+    margin-right: 4px;
+  }
+
+  .notice-footer {
+    padding: 10px 16px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px dashed var(--border);
+  }
+
+  .notice-no-today {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: var(--muted);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .notice-no-today input { cursor: pointer; accent-color: var(--sky); }
+
+  .notice-close-btn {
+    background: var(--sky);
+    color: #fff;
+    border: 1px solid var(--border-dark);
+    border-radius: 3px;
+    padding: 5px 16px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .notice-close-btn:hover { background: #4488bb; }
 </style>
 </head>
 <body>
@@ -892,6 +993,29 @@
 
 <div id="status">Firebase 연결 중...</div>
 <div class="grid" id="grid" style="display:none"></div>
+
+<!-- Notice Popup -->
+<div class="notice-bg" id="noticeBg">
+  <div class="notice-box">
+    <div class="notice-title">📢 업데이트 소식</div>
+    <div class="notice-body">
+      <div class="notice-date">2026년 4월 11일</div>
+      <ul>
+        <li><span>NEW</span> 싸이월드 감성 UI로 전면 개편!</li>
+        <li><span>NEW</span> 프롬프트 추가 전용 모달 (이미지 업로드)</li>
+        <li><span>NEW</span> 이미지 여러 장 → 캐러셀로 보기</li>
+        <li><span>NEW</span> 카드에 댓글 수 표시</li>
+        <li><span>FIX</span> 카드 높이 균일하게 정렬</li>
+      </ul>
+    </div>
+    <div class="notice-footer">
+      <label class="notice-no-today">
+        <input type="checkbox" id="noticeNoToday"> 오늘 다시 보지 않기
+      </label>
+      <button class="notice-close-btn" onclick="closeNotice()">확인</button>
+    </div>
+  </div>
+</div>
 
 <!-- Add/Edit Modal -->
 <div class="modal-bg" id="modalBg" onclick="handleBgClick(event)">
@@ -1027,6 +1151,23 @@
     storageBucket: "sharelink-54e34.firebasestorage.app",
     messagingSenderId: "694782332637",
     appId: "1:694782332637:web:c4bbacb2b0fe34509e1534"
+  };
+
+  // ========== NOTICE POPUP ==========
+  (function() {
+    const today = new Date().toISOString().slice(0, 10);
+    const hidden = localStorage.getItem('noticeHidden');
+    if (hidden !== today) {
+      document.getElementById('noticeBg').classList.add('open');
+    }
+  })();
+
+  window.closeNotice = function() {
+    if (document.getElementById('noticeNoToday').checked) {
+      const today = new Date().toISOString().slice(0, 10);
+      localStorage.setItem('noticeHidden', today);
+    }
+    document.getElementById('noticeBg').classList.remove('open');
   };
 
   const app = initializeApp(firebaseConfig);
