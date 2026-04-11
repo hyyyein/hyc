@@ -339,12 +339,11 @@
     font-size: 11px;
     color: #666;
     line-height: 1.4;
-    margin-bottom: 8px;
+    margin-bottom: 0;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    min-height: 2.8em;
   }
 
   .card-footer { display: flex; align-items: center; justify-content: space-between; }
@@ -363,13 +362,17 @@
     flex-shrink: 0;
   }
 
+  .card-bottom {
+    margin-top: auto;
+  }
+
   .card-meta {
     display: flex;
     gap: 8px;
     align-items: center;
     font-size: 10px;
     color: #99aabb;
-    margin-top: auto;
+    margin-top: 8px;
     padding-top: 8px;
     border-top: 1px dashed var(--border);
   }
@@ -1265,6 +1268,7 @@
           <div class="card-title">${escHtml(l.title || (l.url ? getDomain(l.url) : '제목 없음'))}</div>
           <div class="card-url">${l.url ? escHtml(getDomain(l.url)) : ''}</div>
           ${l.desc ? `<div class="card-desc">${escHtml(l.desc)}</div>` : ''}
+          <div class="card-bottom">
           <div class="card-footer">
             <div class="card-tags">${tags.map(t => `<span class="card-tag">${escHtml(t)}</span>`).join('')}</div>
             <div class="card-actions" onclick="event.stopPropagation()">
@@ -1278,6 +1282,7 @@
             <span>♥ ${l.likes || 0}</span>
             <span>💬 ${l.commentCount || 0}</span>
             ${l.createdAt ? `<span>${new Date(l.createdAt).toLocaleDateString('ko-KR', {year:'numeric',month:'long',day:'numeric'})}</span>` : ''}
+          </div>
           </div>
         </div>
       </div>`;
