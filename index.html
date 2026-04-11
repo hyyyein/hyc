@@ -991,6 +991,8 @@
   <select class="sort-select" id="sortSelect">
     <option value="desc">최신순</option>
     <option value="asc">오래된순</option>
+    <option value="likes">좋아요순</option>
+    <option value="comments">댓글순</option>
   </select>
 </div>
 
@@ -1009,6 +1011,7 @@
         <li><span>NEW</span> 이미지 여러 장 → 캐러셀로 보기</li>
         <li><span>NEW</span> 카드에 댓글 수 표시</li>
         <li><span>FIX</span> 카드 높이 균일하게 정렬</li>
+        <li><span>NEW</span> 좋아요순 · 댓글순 정렬 추가</li>
       </ul>
     </div>
     <div class="notice-footer">
@@ -1237,7 +1240,12 @@
     const searchQ = document.getElementById('searchInput').value.toLowerCase();
     const grid = document.getElementById('grid');
     const sortOrder = document.getElementById('sortSelect').value;
-    const sorted = [...links].sort((a, b) => sortOrder === 'asc' ? a.createdAt - b.createdAt : b.createdAt - a.createdAt);
+    const sorted = [...links].sort((a, b) => {
+      if (sortOrder === 'asc') return a.createdAt - b.createdAt;
+      if (sortOrder === 'likes') return (b.likes || 0) - (a.likes || 0);
+      if (sortOrder === 'comments') return (b.commentCount || 0) - (a.commentCount || 0);
+      return b.createdAt - a.createdAt;
+    });
 
     let filtered = sorted.filter(l => {
       const linkTags = Array.isArray(l.tags) ? l.tags : (l.tag ? [l.tag] : []);
