@@ -988,6 +988,10 @@
     <button class="tag-btn" data-tag="프롬프트">프롬프트</button>
     <button class="tag-btn" data-tag="기타">기타</button>
   </div>
+  <div id="authorFilterBadge" style="display:none;align-items:center;gap:4px;background:#eef6fc;border:1px solid var(--border-dark);border-radius:3px;padding:4px 8px;font-size:11px;color:var(--sky);font-weight:bold;">
+    <span></span>
+    <button onclick="window._clearAuthorFilter()" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:13px;line-height:1;padding:0 2px;">✕</button>
+  </div>
   <select class="sort-select" id="sortSelect">
     <option value="desc">최신순</option>
     <option value="asc">오래된순</option>
@@ -1182,6 +1186,7 @@
   const colRef = collection(db, "links");
 
   let links = [];
+  let authorFilter = '';
   let selectedTags = new Set();
   let selectedModalTags = new Set();
   let fetchTimer = null;
@@ -1247,11 +1252,21 @@
       return b.createdAt - a.createdAt;
     });
 
+    // 작성자 필터 배지 업데이트
+    const badge = document.getElementById('authorFilterBadge');
+    if (authorFilter) {
+      badge.style.display = 'inline-flex';
+      badge.querySelector('span').textContent = `작성자: ${authorFilter}`;
+    } else {
+      badge.style.display = 'none';
+    }
+
     let filtered = sorted.filter(l => {
       const linkTags = Array.isArray(l.tags) ? l.tags : (l.tag ? [l.tag] : []);
       const matchTag = selectedTags.size === 0 || linkTags.some(t => selectedTags.has(t));
       const matchQ = !searchQ || (l.title||'').toLowerCase().includes(searchQ) || (l.url||'').toLowerCase().includes(searchQ);
-      return matchTag && matchQ;
+      const matchAuthor = !authorFilter || (l.author || '') === authorFilter;
+      return matchTag && matchQ && matchAuthor;
     });
 
     if (!filtered.length) {
@@ -1284,7 +1299,7 @@
               <button class="del-btn" onclick="window._deleteLink('${l.id}')">삭제</button>
             </div>
           </div>
-          <div style="font-size:10px;color:#99aabb;margin-top:4px;min-height:1.4em">${l.author ? `by ${escHtml(l.author)}` : ''}</div>
+          <div style="font-size:10px;color:#99aabb;margin-top:4px;min-height:1.4em">${l.author ? `<span style="cursor:pointer;text-decoration:underline dotted;text-underline-offset:2px" onclick="event.stopPropagation();window._filterByAuthor('${escHtml(l.author)}')">by ${escHtml(l.author)}</span>` : ''}</div>
           <div class="card-meta">
             <span class="eye-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 3C4.5 3 1.5 8 1.5 8C1.5 8 4.5 13 8 13C11.5 13 14.5 8 14.5 8C14.5 8 11.5 3 8 3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.4"/></svg> ${l.views || 0}</span>
             <span>♥ ${l.likes || 0}</span>
@@ -1641,6 +1656,16 @@
   };
 
   window._editLink = function(id) { window.openModal(id); };
+
+  window._filterByAuthor = function(author) {
+    authorFilter = author;
+    render();
+  };
+
+  window._clearAuthorFilter = function() {
+    authorFilter = '';
+    render();
+  };
 
   window._deleteLink = async function(id) {
     if (!confirm('삭제할까요?')) return;
