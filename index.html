@@ -400,7 +400,8 @@
     white-space: nowrap;
   }
   .card-actions button:hover { background: var(--sky); color: #fff; }
-  .card-actions .del-btn:hover { background: #ffeef0; color: #cc4455; border-color: #cc4455; }
+  .card-actions .del-btn { background: #ffeef0; color: #cc4455; border-color: #ffaabb; }
+  .card-actions .del-btn:hover { background: #ffccd5; color: #aa2233; border-color: #cc4455; }
 
   .empty {
     grid-column: 1 / -1;
@@ -1154,12 +1155,14 @@
           <div class="card-bottom">
           <div class="card-footer">
             <div class="card-tags">${tags.map(t => `<span class="card-tag">${escHtml(t)}</span>`).join('')}</div>
+          </div>
+          <div style="font-size:10px;color:#99aabb;margin-top:4px;min-height:1.4em;display:flex;align-items:center;justify-content:space-between;">
+            <span>${l.author ? `<span style="cursor:pointer;text-decoration:underline dotted;text-underline-offset:2px" onclick="event.stopPropagation();window._filterByAuthor(${JSON.stringify(l.author)})">by ${escHtml(l.author)}</span>` : ''}</span>
             <div class="card-actions" onclick="event.stopPropagation()">
               <button onclick="window._editLink('${l.id}')">수정</button>
               <button class="del-btn" onclick="window._deleteLink('${l.id}')">삭제</button>
             </div>
           </div>
-          <div style="font-size:10px;color:#99aabb;margin-top:4px;min-height:1.4em">${l.author ? `<span style="cursor:pointer;text-decoration:underline dotted;text-underline-offset:2px" onclick="event.stopPropagation();window._filterByAuthor(${JSON.stringify(l.author)})">by ${escHtml(l.author)}</span>` : ''}</div>
           <div class="card-meta">
             <span class="eye-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 3C4.5 3 1.5 8 1.5 8C1.5 8 4.5 13 8 13C11.5 13 14.5 8 14.5 8C14.5 8 11.5 3 8 3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.4"/></svg> ${l.views || 0}</span>
             <span>♥ ${l.likes || 0}</span>
