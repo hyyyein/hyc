@@ -1165,8 +1165,13 @@
   };
 
   // ========== NOTICE POPUP ==========
+  function getLocalDateStr() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+
   (function() {
-    const today = new Date().toISOString().slice(0, 10);
+    const today = getLocalDateStr();
     const hidden = localStorage.getItem('noticeHidden');
     if (hidden !== today) {
       document.getElementById('noticeBg').classList.add('open');
@@ -1175,8 +1180,7 @@
 
   window.closeNotice = function() {
     if (document.getElementById('noticeNoToday').checked) {
-      const today = new Date().toISOString().slice(0, 10);
-      localStorage.setItem('noticeHidden', today);
+      localStorage.setItem('noticeHidden', getLocalDateStr());
     }
     document.getElementById('noticeBg').classList.remove('open');
   };
@@ -1300,7 +1304,7 @@
               <button class="del-btn" onclick="window._deleteLink('${l.id}')">삭제</button>
             </div>
           </div>
-          <div style="font-size:10px;color:#99aabb;margin-top:4px;min-height:1.4em">${l.author ? `<span style="cursor:pointer;text-decoration:underline dotted;text-underline-offset:2px" onclick="event.stopPropagation();window._filterByAuthor('${escHtml(l.author)}')">by ${escHtml(l.author)}</span>` : ''}</div>
+          <div style="font-size:10px;color:#99aabb;margin-top:4px;min-height:1.4em">${l.author ? `<span style="cursor:pointer;text-decoration:underline dotted;text-underline-offset:2px" onclick="event.stopPropagation();window._filterByAuthor(${JSON.stringify(l.author)})">by ${escHtml(l.author)}</span>` : ''}</div>
           <div class="card-meta">
             <span class="eye-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 3C4.5 3 1.5 8 1.5 8C1.5 8 4.5 13 8 13C11.5 13 14.5 8 14.5 8C14.5 8 11.5 3 8 3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.4"/></svg> ${l.views || 0}</span>
             <span>♥ ${l.likes || 0}</span>
@@ -1479,9 +1483,13 @@
     const text = document.getElementById('commentText').value.trim();
     if (!text) return;
     const commentsRef = collection(db, "links", currentDetailLink.id, "comments");
-    await addDoc(commentsRef, { author, text, createdAt: Date.now() });
-    await updateDoc(doc(db, "links", currentDetailLink.id), { commentCount: increment(1) });
-    document.getElementById('commentText').value = '';
+    try {
+      await addDoc(commentsRef, { author, text, createdAt: Date.now() });
+      await updateDoc(doc(db, "links", currentDetailLink.id), { commentCount: increment(1) });
+      document.getElementById('commentText').value = '';
+    } catch(e) {
+      alert('댓글 등록 실패: ' + e.message);
+    }
   };
 
   window.closeDetail = function() {
@@ -1555,6 +1563,7 @@
 
     if (id) {
       const l = links.find(x => x.id === id);
+      if (!l) { window.closeModal(); return; }
       document.getElementById('urlInput').value = l.url;
       document.getElementById('titleInput').value = l.title;
       document.getElementById('descInput').value = l.desc || '';
@@ -1795,7 +1804,8 @@
         promptTip: document.getElementById('pPromptTipInput').value.trim(),
         createdAt: Date.now(),
         views: 0,
-        likes: 0
+        likes: 0,
+        commentCount: 0
       });
       window.closePromptModal();
     } catch(e) {
