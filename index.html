@@ -1537,9 +1537,13 @@
 
   window._deleteLink = async function(id) {
     if (!confirm('삭제할까요?')) return;
-    const commentsSnap = await getDocs(collection(db, "links", id, "comments"));
-    await Promise.all(commentsSnap.docs.map(d => deleteDoc(d.ref)));
-    await deleteDoc(doc(db, "links", id));
+    try {
+      const commentsSnap = await getDocs(collection(db, "links", id, "comments"));
+      await Promise.all(commentsSnap.docs.map(d => deleteDoc(d.ref)));
+      await deleteDoc(doc(db, "links", id));
+    } catch(e) {
+      alert('삭제 실패: ' + e.message);
+    }
   };
 
   // ========== CAROUSEL ==========
