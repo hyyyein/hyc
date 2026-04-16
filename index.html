@@ -459,14 +459,16 @@
 
   .card-meta {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     align-items: center;
+    justify-content: center;
     font-size: 10px;
     color: #99aabb;
     margin-top: 8px;
     padding-top: 8px;
     border-top: 1px dashed var(--border);
   }
+  .card-meta-date { margin-left: auto; white-space: nowrap; }
 
   .card-actions {
     display: flex;
@@ -984,7 +986,7 @@
   .new-badge {
     position: absolute;
     top: 7px;
-    right: 7px;
+    left: 7px;
     z-index: 10;
     background: linear-gradient(135deg, #ff4488 0%, #ff88bb 50%, #ff4488 100%);
     color: #fff;
@@ -992,15 +994,13 @@
     font-weight: bold;
     font-family: '굴림', 'Gulim', sans-serif;
     letter-spacing: 1px;
-    padding: 2px 6px;
-    border-top: 1px solid #ffbbdd;
-    border-left: 1px solid #ffbbdd;
-    border-right: 1px solid #cc1155;
-    border-bottom: 1px solid #cc1155;
+    padding: 2px 7px;
+    border-radius: 8px 8px 8px 2px;
     text-shadow: 0 1px 0 rgba(0,0,0,0.2);
-    box-shadow: 1px 1px 0 rgba(0,0,0,0.15);
+    box-shadow: 1px 2px 4px rgba(200,50,100,0.3);
     overflow: hidden;
-    animation: new-blink 2s ease-in-out infinite;
+    transform: rotate(-4deg);
+    animation: new-blink 3.5s ease-in-out infinite;
     pointer-events: none;
   }
   .new-badge::after {
@@ -1372,7 +1372,7 @@
             <span class="eye-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 3C4.5 3 1.5 8 1.5 8C1.5 8 4.5 13 8 13C11.5 13 14.5 8 14.5 8C14.5 8 11.5 3 8 3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.4"/></svg> ${l.views || 0}</span>
             <span>♥ ${l.likes || 0}</span>
             <span>💬 ${l.commentCount || 0}</span>
-            ${l.createdAt ? `<span>${new Date(l.createdAt).toLocaleDateString('ko-KR', {year:'numeric',month:'long',day:'numeric'})}</span>` : ''}
+            ${l.createdAt ? `<span class="card-meta-date">${new Date(l.createdAt).toLocaleDateString('ko-KR', {year:'numeric',month:'long',day:'numeric'})}</span>` : ''}
           </div>
           </div>
         </div>
