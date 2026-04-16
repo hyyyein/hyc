@@ -971,6 +971,35 @@
     border-bottom: 2px solid #cce4f8;
   }
 
+  /* Author quick buttons */
+  .author-quick-btns {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-top: 5px;
+  }
+  .author-quick-btns button {
+    padding: 2px 9px;
+    font-size: 11px;
+    font-family: inherit;
+    font-weight: bold;
+    color: #336699;
+    background: linear-gradient(180deg, #eef6ff 0%, #ddeeff 100%);
+    border-top: 1px solid #e8f4ff;
+    border-left: 1px solid #e8f4ff;
+    border-right: 1px solid #7aabcc;
+    border-bottom: 1px solid #7aabcc;
+    border-radius: 0;
+    cursor: pointer;
+  }
+  .author-quick-btns button:hover { background: linear-gradient(180deg, #cce4ff 0%, #bbddf8 100%); }
+  .author-quick-btns button:active {
+    border-top: 1px solid #7aabcc;
+    border-left: 1px solid #7aabcc;
+    border-right: 1px solid #e8f4ff;
+    border-bottom: 1px solid #e8f4ff;
+  }
+
   /* Eye icon */
   .eye-icon { display: inline-flex; align-items: center; gap: 2px; vertical-align: middle; }
 
@@ -1121,6 +1150,15 @@
     <input type="text" id="descInput" placeholder="짧은 메모...">
     <label>올린 사람 <span style="color:#555;font-size:11px">(선택)</span></label>
     <input type="text" id="authorInput" placeholder="닉네임...">
+    <div class="author-quick-btns">
+      <button type="button" onclick="document.getElementById('authorInput').value='혜인'">혜인</button>
+      <button type="button" onclick="document.getElementById('authorInput').value='문이'">문이</button>
+      <button type="button" onclick="document.getElementById('authorInput').value='센'">센</button>
+      <button type="button" onclick="document.getElementById('authorInput').value='종석'">종석</button>
+      <button type="button" onclick="document.getElementById('authorInput').value='쥐'">쥐</button>
+      <button type="button" onclick="document.getElementById('authorInput').value='헨지'">헨지</button>
+      <button type="button" onclick="document.getElementById('authorInput').value='건우'">건우</button>
+    </div>
     <label>태그</label>
     <div class="modal-tags">
       <button class="modal-tag" data-tag="AI">AI</button>
@@ -1170,6 +1208,15 @@
     <input type="text" id="pTitleInput" placeholder="프롬프트 제목">
     <label>올린 사람 <span style="color:#555;font-size:11px">(선택)</span></label>
     <input type="text" id="pAuthorInput" placeholder="닉네임...">
+    <div class="author-quick-btns">
+      <button type="button" onclick="document.getElementById('pAuthorInput').value='혜인'">혜인</button>
+      <button type="button" onclick="document.getElementById('pAuthorInput').value='문이'">문이</button>
+      <button type="button" onclick="document.getElementById('pAuthorInput').value='센'">센</button>
+      <button type="button" onclick="document.getElementById('pAuthorInput').value='종석'">종석</button>
+      <button type="button" onclick="document.getElementById('pAuthorInput').value='쥐'">쥐</button>
+      <button type="button" onclick="document.getElementById('pAuthorInput').value='헨지'">헨지</button>
+      <button type="button" onclick="document.getElementById('pAuthorInput').value='건우'">건우</button>
+    </div>
     <label>태그</label>
     <div class="modal-tags" id="promptModalTagsContainer">
       <button class="modal-tag selected" data-tag="프롬프트">프롬프트</button>
