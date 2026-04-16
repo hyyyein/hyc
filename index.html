@@ -972,6 +972,47 @@
   /* Eye icon */
   .eye-icon { display: inline-flex; align-items: center; gap: 2px; vertical-align: middle; }
 
+  /* ===== NEW BADGE ===== */
+  @keyframes new-blink {
+    0%, 80%, 100% { opacity: 1; }
+    40% { opacity: 0.35; }
+  }
+  @keyframes new-shine {
+    0% { left: -60%; }
+    100% { left: 130%; }
+  }
+  .new-badge {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    z-index: 10;
+    background: linear-gradient(135deg, #ff4488 0%, #ff88bb 50%, #ff4488 100%);
+    color: #fff;
+    font-size: 9px;
+    font-weight: bold;
+    font-family: '굴림', 'Gulim', sans-serif;
+    letter-spacing: 1px;
+    padding: 2px 6px;
+    border-top: 1px solid #ffbbdd;
+    border-left: 1px solid #ffbbdd;
+    border-right: 1px solid #cc1155;
+    border-bottom: 1px solid #cc1155;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.2);
+    box-shadow: 1px 1px 0 rgba(0,0,0,0.15);
+    overflow: hidden;
+    animation: new-blink 2s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .new-badge::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    left: -60%;
+    width: 40%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    animation: new-shine 2.5s ease-in-out infinite;
+  }
+
   /* ========== MOBILE ========== */
   @media (max-width: 600px) {
     header {
@@ -1307,8 +1348,10 @@
 
       const tags = Array.isArray(l.tags) ? l.tags : (l.tag ? [l.tag] : ['기타']);
 
+      const isNew = l.createdAt && (Date.now() - l.createdAt) < 2 * 24 * 60 * 60 * 1000;
       return `
       <div class="card" onclick="window._openDetail('${l.id}')">
+        ${isNew ? '<span class="new-badge">✦ NEW</span>' : ''}
         ${thumb}
         <div class="card-body">
           <div class="card-title">${escHtml(l.title || (l.url ? getDomain(l.url) : '제목 없음'))}</div>
