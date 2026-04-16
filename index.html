@@ -974,10 +974,30 @@
 
   /* ========== MOBILE ========== */
   @media (max-width: 600px) {
-    header { flex-wrap: wrap; gap: 6px; padding: 10px 14px; }
-    header h1 { font-size: 13px; }
-    .header-quote { font-size: 13px; width: 100%; text-align: center; order: 3; }
-    .header-btns { gap: 4px; }
+    header {
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 10px 14px;
+      align-items: flex-start;
+    }
+    header h1 {
+      font-size: 13px;
+      letter-spacing: 0;
+      flex: 1;
+    }
+    .header-btns {
+      gap: 4px;
+      order: 2;
+      align-self: flex-start;
+    }
+    .header-quote {
+      font-size: 28px;
+      width: 100%;
+      text-align: center;
+      order: 3;
+      margin-top: 4px;
+    }
+    .header-deco-bar { order: 4; }
     .add-btn, .add-btn-secondary { font-size: 11px; padding: 4px 8px; }
     .controls { padding: 8px 12px; gap: 6px; }
     .grid { padding: 14px 10px 60px; grid-template-columns: 1fr 1fr; gap: 8px; }
