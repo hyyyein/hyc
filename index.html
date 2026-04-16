@@ -1311,7 +1311,7 @@
     <div class="upload-area" onclick="document.getElementById('imageFiles').click()">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:6px;display:block;margin-left:auto;margin-right:auto"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
       클릭해서 이미지 선택
-      <input type="file" id="imageFiles" accept="image/*" multiple style="display:none" onchange="handleImageSelect(event)">
+      <input type="file" id="imageFiles" accept="image/*,.heic,.heif" multiple style="display:none" onchange="handleImageSelect(event)">
     </div>
     <div class="upload-preview" id="uploadPreview"></div>
     <div class="prompt-fields-header" style="font-size:11px;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin-top:18px;margin-bottom:4px">프롬프트 내용</div>
@@ -2030,7 +2030,7 @@
           const reader = new FileReader();
           reader.onload = e => {
             img.onload = () => {
-              const MAX = 800;
+              const MAX = 600;
               let w = img.width, h = img.height;
               if (w > MAX || h > MAX) {
                 if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
@@ -2039,15 +2039,25 @@
               const canvas = document.createElement('canvas');
               canvas.width = w; canvas.height = h;
               canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-              resolve(canvas.toDataURL('image/jpeg', 0.75));
+              resolve(canvas.toDataURL('image/jpeg', 0.65));
             };
-            img.onerror = reject;
+            img.onerror = () => reject(new Error(`"${file.name}" 이미지를 읽을 수 없습니다 (HEIC/지원하지 않는 형식)`));
             img.src = e.target.result;
           };
-          reader.onerror = reject;
+          reader.onerror = () => reject(new Error(`"${file.name}" 파일 읽기 실패`));
           reader.readAsDataURL(file);
         });
+        // 이미지 1장당 250KB base64 초과 시 경고
+        if (dataUrl.length > 250 * 1024) {
+          const kb = Math.round(dataUrl.length / 1024);
+          throw new Error(`이미지가 너무 큽니다 (${kb}KB). 더 작은 이미지를 사용해주세요.`);
+        }
         imageUrls.push(dataUrl);
+      }
+      // 전체 images 배열이 700KB 초과 시 경고 (Firestore 1MB 한도 여유분 포함)
+      const totalSize = imageUrls.reduce((sum, u) => sum + u.length, 0);
+      if (totalSize > 700 * 1024) {
+        throw new Error(`이미지 총 용량이 너무 큽니다 (${Math.round(totalSize/1024)}KB). 이미지 수를 줄여주세요.`);
       }
 
       const tags = [...selectedPromptModalTags];
