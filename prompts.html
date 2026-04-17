@@ -471,7 +471,8 @@
     padding-top: 6px;
     border-top: 1px dashed var(--border);
   }
-  .pcard-text-only .pcard-text-meta .author { color: var(--sky); font-weight: bold; }
+  .pcard-text-only .pcard-text-meta .author { color: var(--sky); font-weight: bold; cursor: pointer; text-decoration: underline dotted; }
+  .pcard-text-only .pcard-text-meta .author:hover { color: var(--sky-light); }
 
   .empty {
     text-align: center;
@@ -870,6 +871,10 @@
     <option value="likes">좋아요순</option>
     <option value="comments">댓글순</option>
   </select>
+  <div id="authorFilterBadge" style="display:none;align-items:center;gap:4px;padding:3px 8px;background:var(--sky-pale);border:1px solid var(--border-dark);border-radius:10px;font-size:11px;color:var(--sky);font-weight:bold">
+    👤 <span id="authorFilterName"></span>
+    <button onclick="window._filterAuthor('')" style="background:none;border:none;color:var(--sky);cursor:pointer;font-size:12px;padding:0;line-height:1;font-family:inherit">✕</button>
+  </div>
 </div>
 
 <!-- 추천픽 리본 -->
@@ -1257,6 +1262,7 @@
   let selectedImageFiles = [];
   let selectedEnvs = new Set();
   let detailOpen = localStorage.getItem('promptDetailOpen') === '1';
+  let authorFilter = '';
 
   // 프롬프트 항목만 필터 (tags에 '프롬프트' 포함 + promptText 있음)
   function isPromptItem(l) {
@@ -1301,11 +1307,12 @@
     let filtered = [...allLinks].filter(l => {
       const tags = Array.isArray(l.tags) ? l.tags : [];
       const envMatch = !envFilter || tags.includes(envFilter) || (l.promptEnv || '').includes(envFilter);
+      const authorMatch = !authorFilter || (l.author || '') === authorFilter;
       const qMatch = !searchQ ||
         (l.title || '').toLowerCase().includes(searchQ) ||
         (l.promptText || '').toLowerCase().includes(searchQ) ||
         (l.promptIntro || '').toLowerCase().includes(searchQ);
-      return envMatch && qMatch;
+      return envMatch && authorMatch && qMatch;
     });
 
     filtered.sort((a, b) => {
@@ -1357,7 +1364,7 @@
           ${env ? `<div class="pcard-text-env">✦ ${escHtml(env)}</div>` : ''}
           <div class="pcard-text-preview">${escHtml(preview)}</div>
           <div class="pcard-text-meta">
-            <span>${l.author ? `<span class="author">by ${escHtml(l.author)}</span>` : ''}</span>
+            <span>${l.author ? `<span class="author" onclick="event.stopPropagation();window._filterAuthor('${escHtml(l.author)}')">by ${escHtml(l.author)}</span>` : ''}</span>
             <span>♥ ${l.likes || 0} · 💬 ${l.commentCount || 0}</span>
           </div>
         </div>`;
@@ -1557,6 +1564,18 @@
       await updateDoc(doc(db, "links", currentDetailLink.id), { commentCount: increment(1) });
       document.getElementById('commentText').value = '';
     } catch(e) { alert('등록 실패: ' + e.message); }
+  };
+
+  window._filterAuthor = function(name) {
+    authorFilter = name;
+    const badge = document.getElementById('authorFilterBadge');
+    if (name) {
+      document.getElementById('authorFilterName').textContent = name;
+      badge.style.display = 'flex';
+    } else {
+      badge.style.display = 'none';
+    }
+    render();
   };
 
   window.closeDetail = function() {
