@@ -821,6 +821,7 @@
   }
   .comment-submit:hover { background: #4488bb; }
 
+  #promptModalBg { display: none; }
   #promptModalBg.open { display: flex; }
 
   @media (max-width: 700px) {
@@ -881,7 +882,7 @@
 <div class="masonry" id="masonry" style="display:none"></div>
 
 <!-- ===== Prompt Add Modal ===== -->
-<div style="display:none;position:fixed;inset:0;background:rgba(100,150,200,0.5);z-index:500;align-items:center;justify-content:center" id="promptModalBg">
+<div style="position:fixed;inset:0;background:rgba(100,150,200,0.5);z-index:500;align-items:center;justify-content:center" id="promptModalBg">
   <div class="prompt-modal-box">
     <div class="pm-header">✦ 프롬프트 추가</div>
 
