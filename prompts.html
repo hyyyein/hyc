@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>프롬프트 갤러리 ✦ hyc</title>
+<style>
+  :root {
+    --pink-deep: #d06090;
+    --pink: #ee88aa;
+    --pink-light: #ffc8dc;
+    --pink-pale: #fff0f6;
+    --pink-border: #f0b8d0;
+    --sky: #5599cc;
+    --bg-start: #1a1028;
+    --bg-end: #2a1838;
+    --card-bg: #ffffff;
+    --text: #333333;
+    --text-light: #fff;
+    --muted: #888;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  @keyframes sparkle {
+    0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    25% { opacity: 0.4; transform: scale(1.3) rotate(15deg); }
+    75% { opacity: 0.7; transform: scale(0.8) rotate(-10deg); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+  @keyframes shine {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  body {
+    font-family: '굴림', 'Gulim', '돋움', 'Dotum', AppleGothic, sans-serif;
+    color: var(--text-light);
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(238,136,170,0.2) 0%, transparent 40%),
+      radial-gradient(circle at 80% 90%, rgba(136,187,221,0.15) 0%, transparent 40%),
+      linear-gradient(180deg, var(--bg-start) 0%, var(--bg-end) 100%);
+    background-attachment: fixed;
+    font-size: 12px;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    padding: 20px 24px 10px;
+    position: relative;
+    border-bottom: 1px solid rgba(240,184,208,0.2);
+    background: linear-gradient(180deg, rgba(208,96,144,0.15) 0%, transparent 100%);
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  header h1 {
+    font-family: '궁서체', '궁서', GungSeo, serif;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #fff 0%, #ffc8dc 25%, #fff 50%, #ffc8dc 75%, #fff 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 4s linear infinite;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  header h1 .spark {
+    display: inline-block;
+    color: #ffc8dc;
+    -webkit-text-fill-color: #ffc8dc;
+    font-size: 18px;
+    animation: sparkle 2s ease-in-out infinite;
+  }
+  header h1 .spark:nth-child(3) { animation-delay: 0.8s; }
+
+  .header-tagline {
+    font-family: '궁서체', '궁서', serif;
+    font-size: 13px;
+    color: #ffc8dc;
+    opacity: 0.9;
+    font-style: italic;
+  }
+  .header-btn {
+    background: linear-gradient(180deg, #ff7aa8 0%, #e04880 100%);
+    color: #fff;
+    border: 1px solid #c03868;
+    padding: 7px 16px;
+    font-family: '굴림', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 3px;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.4),
+      0 2px 6px rgba(208,96,144,0.4);
+    text-shadow: 0 1px 0 rgba(160,40,90,0.4);
+    transition: transform 0.12s;
+  }
+  .header-btn:hover { transform: translateY(-1px); }
+  .header-btn:active { transform: translateY(1px); }
+
+  /* ===== PAGE NAV ===== */
+  .page-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 14px 16px 0;
+  }
+  .page-nav-tab {
+    padding: 6px 16px;
+    font-family: '굴림', sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    color: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 3px 3px 0 0;
+    border-bottom: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.15s;
+  }
+  .page-nav-tab:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.12);
+  }
+  .page-nav-tab.active {
+    color: #fff;
+    background: linear-gradient(180deg, #d06090 0%, #a03868 100%);
+    border-color: #c03868;
+    padding: 7px 18px;
+    font-size: 12px;
+    z-index: 2;
+    box-shadow: 0 -2px 8px rgba(208,96,144,0.3);
+  }
+  .page-nav-tab.active::before {
+    content: "✦";
+    color: #ffc8dc;
+    font-size: 10px;
+    animation: sparkle 2s ease-in-out infinite;
+  }
+
+  /* ===== CONTROLS ===== */
+  .controls {
+    padding: 14px 24px 8px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .search-wrap {
+    flex: 1;
+    min-width: 220px;
+    max-width: 360px;
+    position: relative;
+  }
+  .search-wrap::before {
+    content: "🔎";
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    opacity: 0.6;
+  }
+  .search-wrap input {
+    width: 100%;
+    padding: 8px 12px 8px 32px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 3px;
+    color: #fff;
+    font-family: '굴림', sans-serif;
+    font-size: 12px;
+    outline: none;
+  }
+  .search-wrap input::placeholder { color: rgba(255,255,255,0.4); }
+  .search-wrap input:focus { border-color: var(--pink); background: rgba(255,255,255,0.12); }
+
+  .env-filters {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+  .env-btn {
+    padding: 5px 10px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(240,184,208,0.3);
+    color: rgba(255,255,255,0.7);
+    font-family: '굴림', sans-serif;
+    font-size: 11px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+  .env-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  .env-btn.active {
+    background: linear-gradient(180deg, #ff7aa8 0%, #d06090 100%);
+    color: #fff;
+    border-color: #c03868;
+    box-shadow: 0 0 10px rgba(238,136,170,0.4);
+  }
+
+  .sort-select {
+    padding: 6px 10px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    font-family: '굴림', sans-serif;
+    font-size: 11px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .sort-select option { background: #2a1838; color: #fff; }
+
+  /* ===== PINNED RIBBON ===== */
+  .pinned-ribbon {
+    margin: 10px 24px 0;
+    padding: 10px 14px;
+    background: linear-gradient(135deg, rgba(255,122,168,0.15) 0%, rgba(208,96,144,0.12) 100%);
+    border: 1px solid rgba(255,200,220,0.25);
+    border-radius: 3px;
+    display: none;
+  }
+  .pinned-ribbon.show { display: block; }
+  .pinned-title {
+    font-family: '궁서체', serif;
+    font-size: 12px;
+    color: #ffc8dc;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  .pinned-title .spark {
+    color: #ffc8dc;
+    animation: sparkle 2s ease-in-out infinite;
+    display: inline-block;
+  }
+  .pinned-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .pinned-scroll::-webkit-scrollbar { height: 4px; }
+  .pinned-scroll::-webkit-scrollbar-thumb { background: var(--pink); border-radius: 2px; }
+  .pinned-item {
+    flex: 0 0 110px;
+    height: 110px;
+    border-radius: 3px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    border: 1.5px solid var(--pink-border);
+    background: #2a1838;
+    transition: transform 0.15s;
+  }
+  .pinned-item:hover { transform: scale(1.04); border-color: var(--pink); }
+  .pinned-item img { width: 100%; height: 100%; object-fit: cover; }
+  .pinned-item .pin-overlay {
+    position: absolute;
+    top: 4px; left: 4px;
+    background: rgba(208,96,144,0.9);
+    color: #fff;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 8px;
+  }
+  .pinned-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #3a2048 0%, #2a1838 100%);
+    font-size: 30px;
+  }
+
+  /* ===== MASONRY GRID ===== */
+  .masonry {
+    padding: 16px 24px 60px;
+    column-count: 4;
+    column-gap: 12px;
+  }
+  @media (max-width: 1200px) { .masonry { column-count: 3; } }
+  @media (max-width: 800px) { .masonry { column-count: 2; padding: 12px 12px 50px; } }
+  @media (max-width: 480px) { .masonry { column-count: 2; column-gap: 6px; padding: 10px 8px 50px; } }
+
+  .pcard {
+    break-inside: avoid;
+    margin-bottom: 12px;
+    background: var(--card-bg);
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.18s, box-shadow 0.18s;
+    animation: fadeIn 0.4s ease-out backwards;
+    box-shadow:
+      0 2px 6px rgba(0,0,0,0.2),
+      0 0 0 1px rgba(255,255,255,0.05);
+  }
+  .pcard:nth-child(n) { animation-delay: calc(var(--i, 0) * 30ms); }
+  .pcard:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 6px 20px rgba(0,0,0,0.35),
+      0 0 0 1.5px var(--pink);
+  }
+  .pcard-img-wrap {
+    position: relative;
+    background: #f0e5ee;
+    overflow: hidden;
+  }
+  .pcard-img {
+    width: 100%;
+    display: block;
+  }
+  .pcard-placeholder {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--pink-pale) 0%, #ffe5ee 100%);
+    font-size: 38px;
+    color: var(--pink-deep);
+    gap: 6px;
+  }
+  .pcard-placeholder-label {
+    font-size: 11px;
+    color: var(--pink-deep);
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  .pcard-pin {
+    position: absolute;
+    top: 8px; left: 8px;
+    background: linear-gradient(135deg, #ff6b9d 0%, #ff8fb8 100%);
+    color: #fff;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(220,100,150,0.4);
+    z-index: 3;
+  }
+  .pcard-new {
+    position: absolute;
+    top: 8px; right: 8px;
+    background: #fff;
+    color: #c04878;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 8px;
+    z-index: 3;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .pcard-img-count {
+    position: absolute;
+    bottom: 8px; right: 8px;
+    background: rgba(0,0,0,0.65);
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    backdrop-filter: blur(4px);
+  }
+  .pcard-img-count::before { content: "▣ "; }
+
+  /* hover overlay with prompt preview */
+  .pcard-hover {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.88) 100%);
+    color: #fff;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+  .pcard:hover .pcard-hover { opacity: 1; }
+  .pcard-hover-title {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+  .pcard-hover-env {
+    font-size: 10px;
+    color: #ffc8dc;
+    margin-bottom: 3px;
+  }
+  .pcard-hover-meta {
+    font-size: 10px;
+    color: rgba(255,255,255,0.7);
+    display: flex;
+    gap: 8px;
+  }
+
+  /* cards without images - text only */
+  .pcard-text-only {
+    padding: 14px 14px 12px;
+  }
+  .pcard-text-only .pcard-text-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .pcard-text-only .pcard-text-env {
+    font-size: 10px;
+    color: var(--pink-deep);
+    margin-bottom: 8px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+  }
+  .pcard-text-only .pcard-text-preview {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    background: var(--pink-pale);
+    padding: 8px 10px;
+    border-radius: 3px;
+    font-family: 'Courier New', 'D2Coding', monospace;
+    border-left: 3px solid var(--pink);
+  }
+  .pcard-text-only .pcard-text-meta {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .pcard-text-only .pcard-text-meta .author { color: var(--pink-deep); font-weight: bold; }
+
+  .empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 20px;
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+  }
+  .status {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(255,255,255,0.6);
+    font-size: 13px;
+  }
+
+  /* ===== DETAIL MODAL ===== */
+  .detail-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,6,20,0.88);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: none;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .detail-bg.open { display: block; }
+  .detail-modal {
+    max-width: 1100px;
+    margin: 20px auto;
+    background: #1e1428;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(240,184,208,0.25);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    animation: fadeIn 0.3s ease-out;
+  }
+  .detail-close {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 10;
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .detail-close:hover { background: rgba(208,96,144,0.6); }
+
+  /* Image section - BIG */
+  .detail-hero {
+    background: #0a0614;
+    padding: 0;
+    position: relative;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .detail-hero-img {
+    max-width: 100%;
+    max-height: 80vh;
+    display: block;
+    object-fit: contain;
+  }
+  .detail-hero-placeholder {
+    padding: 80px 20px;
+    font-size: 80px;
+    color: var(--pink-deep);
+    opacity: 0.5;
+  }
+  .detail-hero-empty {
+    padding: 60px 20px;
+    text-align: center;
+    color: rgba(255,255,255,0.5);
+    font-size: 14px;
+    font-style: italic;
+  }
+  .carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .carousel-nav:hover { background: rgba(208,96,144,0.6); }
+  .carousel-nav.prev { left: 12px; }
+  .carousel-nav.next { right: 12px; }
+  .carousel-thumbs {
+    display: flex;
+    gap: 6px;
+    padding: 10px 14px;
+    background: #150a1e;
+    overflow-x: auto;
+    border-bottom: 1px solid rgba(240,184,208,0.15);
+  }
+  .carousel-thumb {
+    flex: 0 0 60px;
+    height: 60px;
+    border-radius: 3px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    opacity: 0.5;
+    transition: opacity 0.15s, border-color 0.15s;
+  }
+  .carousel-thumb.active { opacity: 1; border-color: var(--pink); }
+  .carousel-thumb:hover { opacity: 1; }
+  .carousel-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* Info section */
+  .detail-info {
+    padding: 22px 28px 8px;
+    background: #1e1428;
+    color: #fff;
+  }
+  .detail-tags {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .detail-tag {
+    font-size: 10px;
+    padding: 3px 9px;
+    background: rgba(240,184,208,0.18);
+    color: #ffc8dc;
+    border: 1px solid rgba(240,184,208,0.3);
+    border-radius: 10px;
+  }
+  .detail-title {
+    font-family: '궁서체', serif;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+  }
+  .detail-meta {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    font-size: 11px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 14px;
+  }
+  .detail-meta span { display: inline-flex; align-items: center; gap: 4px; }
+  .detail-stats {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 0;
+    border-top: 1px solid rgba(240,184,208,0.15);
+    border-bottom: 1px solid rgba(240,184,208,0.15);
+    margin-bottom: 16px;
+  }
+  .like-btn {
+    padding: 7px 14px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(240,184,208,0.3);
+    color: #fff;
+    font-family: '굴림', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .like-btn.liked {
+    background: linear-gradient(180deg, #ff7aa8 0%, #d06090 100%);
+    border-color: #c03868;
+    color: #fff;
+  }
+  .like-btn:hover:not(.liked) { background: rgba(255,255,255,0.14); }
+  .stat-item { color: rgba(255,255,255,0.65); font-size: 12px; display: flex; align-items: center; gap: 4px; }
+
+  /* Prompt body sections */
+  .detail-body {
+    padding: 0 28px 20px;
+    background: #1e1428;
+    color: #fff;
+  }
+  .psection {
+    margin-bottom: 18px;
+  }
+  .psection-title {
+    font-size: 11px;
+    color: #ffc8dc;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .psection-title::before {
+    content: "✦";
+    margin-right: 6px;
+    opacity: 0.6;
+  }
+  .psection-content {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(240,184,208,0.15);
+    border-radius: 4px;
+    padding: 14px 16px;
+    font-size: 13px;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.92);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .psection.prompt-main .psection-content {
+    background: linear-gradient(135deg, rgba(255,122,168,0.08) 0%, rgba(136,187,221,0.05) 100%);
+    border-color: rgba(240,184,208,0.35);
+    font-family: 'Courier New', 'D2Coding', 'Menlo', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    padding: 16px 18px;
+    position: relative;
+  }
+  .copy-btn {
+    padding: 4px 12px;
+    background: linear-gradient(180deg, #ff7aa8 0%, #d06090 100%);
+    color: #fff;
+    border: 1px solid #c03868;
+    font-family: '굴림', sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 3px;
+    text-transform: none;
+    letter-spacing: 0;
+    box-shadow: 0 2px 4px rgba(208,96,144,0.3);
+  }
+  .copy-btn:hover { filter: brightness(1.1); }
+  .copy-btn.copied { background: linear-gradient(180deg, #6cc599 0%, #4ba078 100%); border-color: #3b8060; }
+
+  .env-badge {
+    display: inline-block;
+    background: rgba(136,187,221,0.2);
+    border: 1px solid rgba(136,187,221,0.4);
+    color: #aaddff;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+  }
+
+  /* Comments */
+  .comments-section {
+    padding: 20px 28px 28px;
+    background: #1e1428;
+    border-top: 1px solid rgba(240,184,208,0.15);
+  }
+  .comments-title {
+    font-size: 12px;
+    color: #ffc8dc;
+    font-weight: bold;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+  .comments-title::before { content: "💬 "; }
+  .comment-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px dotted rgba(240,184,208,0.15);
+  }
+  .comment-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--pink) 0%, var(--pink-deep) 100%);
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .comment-content { flex: 1; }
+  .comment-author { font-size: 11px; font-weight: bold; color: #ffc8dc; }
+  .comment-text { font-size: 12px; color: rgba(255,255,255,0.88); line-height: 1.5; margin: 3px 0; }
+  .comment-date { font-size: 10px; color: rgba(255,255,255,0.4); }
+  .comment-form { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+  .comment-form input, .comment-form textarea {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(240,184,208,0.2);
+    color: #fff;
+    padding: 8px 10px;
+    font-family: '굴림', sans-serif;
+    font-size: 12px;
+    border-radius: 3px;
+    outline: none;
+  }
+  .comment-form input { width: 180px; }
+  .comment-form textarea { min-height: 60px; resize: vertical; }
+  .comment-form input:focus, .comment-form textarea:focus { border-color: var(--pink); }
+  .comment-submit {
+    align-self: flex-end;
+    padding: 6px 16px;
+    background: linear-gradient(180deg, #ff7aa8 0%, #d06090 100%);
+    color: #fff;
+    border: 1px solid #c03868;
+    font-family: '굴림', sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+
+  @media (max-width: 700px) {
+    header { padding: 14px 14px 8px; }
+    header h1 { font-size: 18px; }
+    .header-tagline { font-size: 11px; width: 100%; }
+    .controls { padding: 10px 14px 6px; }
+    .detail-info, .detail-body, .comments-section { padding-left: 16px; padding-right: 16px; }
+    .detail-title { font-size: 18px; }
+    .psection-content { font-size: 12px; padding: 12px; }
+    .pinned-ribbon { margin: 8px 14px 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <h1><span class="spark">✦</span> 프롬프트 갤러리 <span class="spark">✦</span></h1>
+    <span class="header-tagline">"좋은 프롬프트는 작품이다"</span>
+    <button class="header-btn" onclick="openPromptModal()">+ 프롬프트 추가</button>
+  </div>
+</header>
+
+<nav class="page-nav">
+  <a class="page-nav-tab" href="index.html">📁 ← 링크 보관함</a>
+  <a class="page-nav-tab active" href="#">프롬프트 갤러리</a>
+</nav>
+
+<div class="controls">
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="제목, 프롬프트 내용 검색...">
+  </div>
+  <div class="env-filters" id="envFilters">
+    <button class="env-btn active" data-env="">전체</button>
+    <button class="env-btn" data-env="이미지">🎨 이미지</button>
+    <button class="env-btn" data-env="영상">🎬 영상</button>
+    <button class="env-btn" data-env="ComfyUI">ComfyUI</button>
+    <button class="env-btn" data-env="NAI">NAI</button>
+    <button class="env-btn" data-env="미드저니">미드저니</button>
+    <button class="env-btn" data-env="NanoBanana">NanoBanana</button>
+    <button class="env-btn" data-env="AI">AI</button>
+    <button class="env-btn" data-env="기타">기타</button>
+  </div>
+  <select class="sort-select" id="sortSelect">
+    <option value="desc">최신순</option>
+    <option value="asc">오래된순</option>
+    <option value="likes">좋아요순</option>
+    <option value="comments">댓글순</option>
+  </select>
+</div>
+
+<!-- 추천픽 리본 -->
+<div class="pinned-ribbon" id="pinnedRibbon">
+  <div class="pinned-title"><span class="spark">✦</span> 혜인님 PICK <span class="spark">✦</span></div>
+  <div class="pinned-scroll" id="pinnedScroll"></div>
+</div>
+
+<div class="status" id="status">✦ 불러오는 중... ✦</div>
+<div class="masonry" id="masonry" style="display:none"></div>
+
+<!-- ===== Prompt Add Modal ===== -->
+<div class="detail-bg" id="promptModalBg" style="background:rgba(10,6,20,0.85)">
+  <div class="detail-modal" style="max-width:560px">
+    <button class="detail-close" onclick="closePromptModal()">✕</button>
+    <div style="padding:28px">
+      <h2 style="font-family:'궁서체',serif;font-size:20px;color:#fff;margin-bottom:18px">✦ 프롬프트 추가</h2>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div>
+          <label style="display:block;font-size:11px;color:#ffc8dc;margin-bottom:4px;font-weight:bold">제목</label>
+          <input type="text" id="pTitleInput" placeholder="프롬프트 제목" style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(240,184,208,0.3);color:#fff;border-radius:3px;font-family:'굴림',sans-serif;font-size:12px;outline:none">
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;color:#ffc8dc;margin-bottom:4px;font-weight:bold">올린 사람 <span style="color:rgba(255,255,255,0.5);font-weight:normal">(선택)</span></label>
+          <input type="text" id="pAuthorInput" placeholder="닉네임..." style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(240,184,208,0.3);color:#fff;border-radius:3px;font-family:'굴림',sans-serif;font-size:12px;outline:none">
+          <div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap">
+            <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='혜인'">혜인</button>
+            <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='문이'">문이</button>
+            <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='센'">센</button>
+            <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='종석'">종석</button>
+            <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='쥐'">쥐</button>
+            <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='헨지'">헨지</button>
+            <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='건우'">건우</button>
+          </div>
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;color:#ffc8dc;margin-bottom:4px;font-weight:bold">태그</label>
+          <div class="modal-tags" id="promptModalTagsContainer" style="display:flex;gap:4px;flex-wrap:wrap">
+            <button class="modal-tag selected" data-tag="프롬프트">프롬프트</button>
+            <button class="modal-tag" data-tag="AI">AI</button>
+            <button class="modal-tag" data-tag="ComfyUI">ComfyUI</button>
+            <button class="modal-tag" data-tag="NAI">NAI</button>
+            <button class="modal-tag" data-tag="미드저니">미드저니</button>
+            <button class="modal-tag" data-tag="NanoBanana">NanoBanana</button>
+            <button class="modal-tag" data-tag="이미지">이미지</button>
+            <button class="modal-tag" data-tag="영상">영상</button>
+            <button class="modal-tag" data-tag="기타">기타</button>
+          </div>
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;color:#ffc8dc;margin-bottom:4px;font-weight:bold">결과물 이미지 <span style="color:rgba(255,255,255,0.5);font-weight:normal">(여러 장 가능)</span></label>
+          <div class="upload-area" onclick="document.getElementById('imageFiles').click()" style="border:1.5px dashed rgba(240,184,208,0.4);padding:18px;text-align:center;color:rgba(255,255,255,0.7);cursor:pointer;border-radius:4px;background:rgba(255,255,255,0.03)">
+            <div style="font-size:22px;margin-bottom:6px">🖼️</div>
+            클릭해서 이미지 선택
+            <input type="file" id="imageFiles" accept="image/*,.heic,.heif" multiple style="display:none" onchange="handleImageSelect(event)">
+          </div>
+          <div class="upload-preview" id="uploadPreview" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"></div>
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;color:#ffc8dc;margin-bottom:4px;font-weight:bold">프롬프트 소개</label>
+          <textarea id="pPromptIntroInput" placeholder="어떤 용도의 프롬프트인지 간단히..." style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(240,184,208,0.3);color:#fff;border-radius:3px;font-family:'굴림',sans-serif;font-size:12px;outline:none;min-height:50px;resize:vertical"></textarea>
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;color:#ffc8dc;margin-bottom:4px;font-weight:bold">실행환경 <span style="color:rgba(255,255,255,0.5);font-weight:normal">(예: DALL-E, ComfyUI, NAI, 미드저니)</span></label>
+          <input type="text" id="pPromptEnvInput" placeholder="실행환경..." style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(240,184,208,0.3);color:#fff;border-radius:3px;font-family:'굴림',sans-serif;font-size:12px;outline:none">
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;color:#ffc8dc;margin-bottom:4px;font-weight:bold">프롬프트</label>
+          <textarea id="pPromptTextInput" placeholder="프롬프트 본문..." style="width:100%;padding:11px 14px;background:rgba(255,122,168,0.05);border:1px solid rgba(240,184,208,0.3);color:#fff;border-radius:3px;font-family:'Courier New',monospace;font-size:12px;outline:none;min-height:120px;resize:vertical;line-height:1.6"></textarea>
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;color:#ffc8dc;margin-bottom:4px;font-weight:bold">활용 팁 <span style="color:rgba(255,255,255,0.5);font-weight:normal">(선택)</span></label>
+          <textarea id="pPromptTipInput" placeholder="사용 팁이나 주의사항..." style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(240,184,208,0.3);color:#fff;border-radius:3px;font-family:'굴림',sans-serif;font-size:12px;outline:none;min-height:50px;resize:vertical"></textarea>
+        </div>
+        <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:linear-gradient(135deg,rgba(255,122,168,0.1) 0%,rgba(208,96,144,0.08) 100%);border:1px dashed rgba(240,184,208,0.4);border-radius:3px;cursor:pointer;font-size:12px;color:#ffc8dc;font-weight:bold">
+          <input type="checkbox" id="pPinnedInput" style="cursor:pointer;width:14px;height:14px;accent-color:#e890b0">
+          <span>✦ 혜인님 PICK에 고정</span>
+        </label>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:4px">
+          <button class="header-btn" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);box-shadow:none;text-shadow:none" onclick="closePromptModal()">취소</button>
+          <button class="header-btn" id="pSaveBtn" onclick="savePrompt()">저장</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .modal-tag {
+    padding: 4px 10px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(240,184,208,0.3);
+    color: rgba(255,255,255,0.75);
+    font-family: '굴림', sans-serif;
+    font-size: 11px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .modal-tag.selected {
+    background: linear-gradient(180deg, #ff7aa8 0%, #d06090 100%);
+    color: #fff;
+    border-color: #c03868;
+  }
+  .author-quick {
+    padding: 3px 10px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.8);
+    font-family: '굴림', sans-serif;
+    font-size: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .author-quick:hover { background: rgba(240,184,208,0.2); color: #fff; }
+  .upload-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(240,184,208,0.3);
+  }
+  .upload-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .upload-thumb button {
+    position: absolute;
+    top: 2px; right: 2px;
+    width: 18px; height: 18px;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 10px;
+  }
+</style>
+
+<!-- ===== Detail Modal ===== -->
+<div class="detail-bg" id="detailBg">
+  <div class="detail-modal">
+    <button class="detail-close" onclick="closeDetail()">✕</button>
+
+    <!-- 캐러셀 썸네일 -->
+    <div class="carousel-thumbs" id="carouselThumbs" style="display:none"></div>
+
+    <!-- 메인 이미지 (크게) -->
+    <div class="detail-hero" id="detailHero"></div>
+
+    <!-- 정보 -->
+    <div class="detail-info">
+      <div class="detail-tags" id="detailTags"></div>
+      <div class="detail-title" id="detailTitle"></div>
+      <div class="detail-meta" id="detailMeta"></div>
+      <div class="detail-stats" id="detailStats"></div>
+    </div>
+
+    <!-- 프롬프트 본문 -->
+    <div class="detail-body" id="detailBody"></div>
+
+    <!-- 댓글 -->
+    <div class="comments-section">
+      <div class="comments-title">댓글</div>
+      <div id="commentsList"></div>
+      <div class="comment-form">
+        <input type="text" id="commentAuthor" placeholder="닉네임">
+        <textarea id="commentText" placeholder="댓글을 남겨보세요..."></textarea>
+        <button class="comment-submit" onclick="submitComment()">등록</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, updateDoc, doc, onSnapshot, orderBy, query, increment } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBAPs7d59vZFkw2RSLUesnudcrZnNhxEdg",
+    authDomain: "sharelink-54e34.firebaseapp.com",
+    projectId: "sharelink-54e34",
+    storageBucket: "sharelink-54e34.firebasestorage.app",
+    messagingSenderId: "694782332637",
+    appId: "1:694782332637:web:c4bbacb2b0fe34509e1534"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const colRef = collection(db, "links");
+
+  let allLinks = [];
+  let envFilter = '';
+  let currentDetailLink = null;
+  let detailCommentUnsub = null;
+  let carouselIndex = 0;
+  let selectedImageFiles = [];
+  let selectedPromptModalTags = new Set(['프롬프트']);
+
+  // 프롬프트 항목만 필터 (tags에 '프롬프트' 포함 + promptText 있음)
+  function isPromptItem(l) {
+    const tags = Array.isArray(l.tags) ? l.tags : (l.tag ? [l.tag] : []);
+    return tags.includes('프롬프트') && (l.promptText || l.promptIntro);
+  }
+
+  const q = query(colRef, orderBy("createdAt", "desc"));
+  onSnapshot(q, (snap) => {
+    allLinks = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(isPromptItem);
+    document.getElementById('status').style.display = 'none';
+    document.getElementById('masonry').style.display = 'block';
+    render();
+    if (currentDetailLink) {
+      const updated = allLinks.find(l => l.id === currentDetailLink.id);
+      if (updated) { currentDetailLink = updated; renderDetailStats(); }
+    }
+  }, (err) => {
+    document.getElementById('status').textContent = 'Firebase 연결 실패';
+    console.error(err);
+  });
+
+  function escHtml(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function getLikedSet() {
+    try { return new Set(JSON.parse(localStorage.getItem('likedLinks') || '[]')); } catch { return new Set(); }
+  }
+  function setLiked(id, liked) {
+    const s = getLikedSet();
+    if (liked) s.add(id); else s.delete(id);
+    localStorage.setItem('likedLinks', JSON.stringify([...s]));
+  }
+
+  function render() {
+    renderPinned();
+    const searchQ = document.getElementById('searchInput').value.toLowerCase();
+    const sortOrder = document.getElementById('sortSelect').value;
+    const masonry = document.getElementById('masonry');
+
+    let filtered = [...allLinks].filter(l => {
+      const tags = Array.isArray(l.tags) ? l.tags : [];
+      const envMatch = !envFilter || tags.includes(envFilter) || (l.promptEnv || '').includes(envFilter);
+      const qMatch = !searchQ ||
+        (l.title || '').toLowerCase().includes(searchQ) ||
+        (l.promptText || '').toLowerCase().includes(searchQ) ||
+        (l.promptIntro || '').toLowerCase().includes(searchQ);
+      return envMatch && qMatch;
+    });
+
+    filtered.sort((a, b) => {
+      if (sortOrder === 'asc') return a.createdAt - b.createdAt;
+      if (sortOrder === 'likes') return (b.likes || 0) - (a.likes || 0);
+      if (sortOrder === 'comments') return (b.commentCount || 0) - (a.commentCount || 0);
+      return b.createdAt - a.createdAt;
+    });
+
+    if (!filtered.length) {
+      masonry.innerHTML = '<div class="empty">✦ 아직 프롬프트가 없어요 ✦<br><br>위의 + 버튼으로 추가해보세요!</div>';
+      return;
+    }
+
+    masonry.innerHTML = filtered.map((l, i) => {
+      const images = (l.images && l.images.length) ? l.images : (l.image ? [l.image] : []);
+      const hasImage = images.length > 0;
+      const isNew = l.createdAt && (Date.now() - l.createdAt) < 2 * 24 * 60 * 60 * 1000;
+      const env = l.promptEnv || (Array.isArray(l.tags) ? l.tags.find(t => ['ComfyUI','NAI','미드저니','NanoBanana','이미지','영상'].includes(t)) : '') || '';
+
+      if (hasImage) {
+        return `
+          <div class="pcard" style="--i:${i}" onclick="window._openDetail('${l.id}')">
+            ${l.pinned ? '<span class="pcard-pin">✦ PICK</span>' : ''}
+            ${isNew ? '<span class="pcard-new">NEW</span>' : ''}
+            <div class="pcard-img-wrap">
+              <img class="pcard-img" src="${escHtml(images[0])}" loading="lazy" alt="">
+              ${images.length > 1 ? `<span class="pcard-img-count">${images.length}</span>` : ''}
+              <div class="pcard-hover">
+                <div class="pcard-hover-title">${escHtml(l.title || '제목 없음')}</div>
+                ${env ? `<div class="pcard-hover-env">${escHtml(env)}</div>` : ''}
+                <div class="pcard-hover-meta">
+                  <span>♥ ${l.likes || 0}</span>
+                  <span>👁 ${l.views || 0}</span>
+                  <span>💬 ${l.commentCount || 0}</span>
+                </div>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      // Text-only card (프롬프트만 있고 이미지 없음)
+      const preview = l.promptText || l.promptIntro || '';
+      return `
+        <div class="pcard pcard-text-only" style="--i:${i}" onclick="window._openDetail('${l.id}')">
+          ${l.pinned ? '<span class="pcard-pin">✦ PICK</span>' : ''}
+          ${isNew ? '<span class="pcard-new">NEW</span>' : ''}
+          <div class="pcard-text-title">${escHtml(l.title || '제목 없음')}</div>
+          ${env ? `<div class="pcard-text-env">✦ ${escHtml(env)}</div>` : ''}
+          <div class="pcard-text-preview">${escHtml(preview)}</div>
+          <div class="pcard-text-meta">
+            <span>${l.author ? `<span class="author">by ${escHtml(l.author)}</span>` : ''}</span>
+            <span>♥ ${l.likes || 0} · 💬 ${l.commentCount || 0}</span>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderPinned() {
+    const ribbon = document.getElementById('pinnedRibbon');
+    const scroll = document.getElementById('pinnedScroll');
+    const pinned = allLinks
+      .filter(l => l.pinned === true)
+      .sort((a, b) => (b.pinnedAt || b.createdAt || 0) - (a.pinnedAt || a.createdAt || 0));
+
+    if (!pinned.length) { ribbon.classList.remove('show'); return; }
+    ribbon.classList.add('show');
+    scroll.innerHTML = pinned.map(l => {
+      const images = (l.images && l.images.length) ? l.images : (l.image ? [l.image] : []);
+      const thumb = images.length
+        ? `<img src="${escHtml(images[0])}" alt="" loading="lazy">`
+        : `<div class="pinned-placeholder">✧</div>`;
+      return `
+        <div class="pinned-item" onclick="window._openDetail('${l.id}')" title="${escHtml(l.title || '')}">
+          ${thumb}
+          <span class="pin-overlay">✦ PICK</span>
+        </div>`;
+    }).join('');
+  }
+
+  // ========== DETAIL MODAL ==========
+  window._openDetail = function(id) {
+    const l = allLinks.find(x => x.id === id);
+    if (!l) return;
+    currentDetailLink = l;
+    carouselIndex = 0;
+
+    updateDoc(doc(db, "links", id), { views: increment(1) });
+
+    const images = (l.images && l.images.length) ? l.images : (l.image ? [l.image] : []);
+    const hero = document.getElementById('detailHero');
+    const thumbs = document.getElementById('carouselThumbs');
+
+    if (images.length > 1) {
+      thumbs.style.display = 'flex';
+      thumbs.innerHTML = images.map((img, i) => `
+        <div class="carousel-thumb ${i === 0 ? 'active' : ''}" onclick="window._goCarousel(${i})">
+          <img src="${escHtml(img)}" alt="" loading="lazy">
+        </div>`).join('');
+      hero.innerHTML = `
+        <img class="detail-hero-img" src="${escHtml(images[0])}" alt="">
+        <button class="carousel-nav prev" onclick="window._prevCarousel()">&#8249;</button>
+        <button class="carousel-nav next" onclick="window._nextCarousel()">&#8250;</button>
+      `;
+    } else if (images.length === 1) {
+      thumbs.style.display = 'none';
+      hero.innerHTML = `<img class="detail-hero-img" src="${escHtml(images[0])}" alt="">`;
+    } else {
+      thumbs.style.display = 'none';
+      hero.innerHTML = `<div class="detail-hero-empty">✦ 이미지가 아직 없어요 ✦</div>`;
+    }
+
+    const tags = Array.isArray(l.tags) ? l.tags : (l.tag ? [l.tag] : []);
+    document.getElementById('detailTags').innerHTML = tags.map(t => `<span class="detail-tag">${escHtml(t)}</span>`).join('');
+    document.getElementById('detailTitle').textContent = l.title || '제목 없음';
+
+    const meta = [];
+    if (l.author) meta.push(`<span>👤 ${escHtml(l.author)}</span>`);
+    if (l.createdAt) meta.push(`<span>📅 ${new Date(l.createdAt).toLocaleDateString('ko-KR', {year:'numeric',month:'2-digit',day:'2-digit'})}</span>`);
+    document.getElementById('detailMeta').innerHTML = meta.join('');
+
+    renderDetailStats();
+
+    // 프롬프트 바디 (이미지 바로 아래)
+    let bodyHtml = '';
+    if (l.promptIntro) {
+      bodyHtml += `
+        <div class="psection">
+          <div class="psection-title">프롬프트 소개</div>
+          <div class="psection-content">${escHtml(l.promptIntro)}</div>
+        </div>`;
+    }
+    if (l.promptEnv) {
+      bodyHtml += `
+        <div class="psection">
+          <div class="psection-title">실행환경</div>
+          <div><span class="env-badge">${escHtml(l.promptEnv)}</span></div>
+        </div>`;
+    }
+    if (l.promptText) {
+      bodyHtml += `
+        <div class="psection prompt-main">
+          <div class="psection-title">
+            <span>✦ 프롬프트</span>
+            <button class="copy-btn" id="copyPromptBtn" onclick="window._copyPrompt()">📋 복사하기</button>
+          </div>
+          <div class="psection-content">${escHtml(l.promptText)}</div>
+        </div>`;
+    }
+    if (l.promptTip) {
+      bodyHtml += `
+        <div class="psection">
+          <div class="psection-title">활용 팁</div>
+          <div class="psection-content">${escHtml(l.promptTip)}</div>
+        </div>`;
+    }
+    document.getElementById('detailBody').innerHTML = bodyHtml;
+
+    // 댓글 실시간
+    if (detailCommentUnsub) detailCommentUnsub();
+    const commentsRef = collection(db, "links", id, "comments");
+    const cq = query(commentsRef, orderBy("createdAt", "asc"));
+    detailCommentUnsub = onSnapshot(cq, snap => {
+      renderComments(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+    });
+
+    document.getElementById('detailBg').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+
+  function renderDetailStats() {
+    if (!currentDetailLink) return;
+    const l = currentDetailLink;
+    const liked = getLikedSet().has(l.id);
+    document.getElementById('detailStats').innerHTML = `
+      <button class="like-btn ${liked ? 'liked' : ''}" onclick="window._toggleLike()">
+        ${liked ? '♥' : '♡'} ${l.likes || 0}
+      </button>
+      <span class="stat-item">👁 ${l.views || 0}</span>
+      <span class="stat-item">💬 ${l.commentCount || 0}</span>
+    `;
+  }
+
+  window._toggleLike = async function() {
+    if (!currentDetailLink) return;
+    const id = currentDetailLink.id;
+    const liked = getLikedSet().has(id);
+    setLiked(id, !liked);
+    await updateDoc(doc(db, "links", id), { likes: increment(liked ? -1 : 1) });
+  };
+
+  window._copyPrompt = function() {
+    if (!currentDetailLink || !currentDetailLink.promptText) return;
+    navigator.clipboard.writeText(currentDetailLink.promptText).then(() => {
+      const btn = document.getElementById('copyPromptBtn');
+      if (btn) {
+        btn.textContent = '✓ 복사됨!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.innerHTML = '📋 복사하기'; btn.classList.remove('copied'); }, 2000);
+      }
+    });
+  };
+
+  // 캐러셀
+  window._goCarousel = function(i) {
+    if (!currentDetailLink) return;
+    const images = (currentDetailLink.images && currentDetailLink.images.length) ? currentDetailLink.images : [];
+    if (i < 0 || i >= images.length) return;
+    carouselIndex = i;
+    document.querySelector('.detail-hero-img').src = images[i];
+    document.querySelectorAll('.carousel-thumb').forEach((t, idx) => {
+      t.classList.toggle('active', idx === i);
+    });
+  };
+  window._prevCarousel = function() {
+    const images = currentDetailLink?.images || [];
+    window._goCarousel((carouselIndex - 1 + images.length) % images.length);
+  };
+  window._nextCarousel = function() {
+    const images = currentDetailLink?.images || [];
+    window._goCarousel((carouselIndex + 1) % images.length);
+  };
+
+  function renderComments(comments) {
+    const list = document.getElementById('commentsList');
+    if (!comments.length) {
+      list.innerHTML = '<div style="color:rgba(255,255,255,0.4);font-size:12px;padding:8px 0">첫 댓글을 남겨보세요!</div>';
+      return;
+    }
+    list.innerHTML = comments.map(c => `
+      <div class="comment-item">
+        <div class="comment-avatar">${(c.author || '?')[0].toUpperCase()}</div>
+        <div class="comment-content">
+          <div class="comment-author">${escHtml(c.author || '익명')}</div>
+          <div class="comment-text">${escHtml(c.text)}</div>
+          <div class="comment-date">${c.createdAt ? new Date(c.createdAt).toLocaleString('ko-KR', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}) : ''}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  window.submitComment = async function() {
+    if (!currentDetailLink) return;
+    const author = document.getElementById('commentAuthor').value.trim() || '익명';
+    const text = document.getElementById('commentText').value.trim();
+    if (!text) return;
+    const commentsRef = collection(db, "links", currentDetailLink.id, "comments");
+    try {
+      await addDoc(commentsRef, { author, text, createdAt: Date.now() });
+      await updateDoc(doc(db, "links", currentDetailLink.id), { commentCount: increment(1) });
+      document.getElementById('commentText').value = '';
+    } catch(e) { alert('등록 실패: ' + e.message); }
+  };
+
+  window.closeDetail = function() {
+    document.getElementById('detailBg').classList.remove('open');
+    document.body.style.overflow = '';
+    if (detailCommentUnsub) { detailCommentUnsub(); detailCommentUnsub = null; }
+    currentDetailLink = null;
+  };
+
+  document.getElementById('detailBg').addEventListener('click', e => {
+    if (e.target === document.getElementById('detailBg')) window.closeDetail();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      if (document.getElementById('detailBg').classList.contains('open')) window.closeDetail();
+      else if (document.getElementById('promptModalBg').classList.contains('open')) window.closePromptModal();
+    }
+    if (document.getElementById('detailBg').classList.contains('open')) {
+      if (e.key === 'ArrowLeft') window._prevCarousel();
+      if (e.key === 'ArrowRight') window._nextCarousel();
+    }
+  });
+
+  // 검색 / 필터
+  document.getElementById('searchInput').addEventListener('input', render);
+  document.getElementById('sortSelect').addEventListener('change', render);
+  document.querySelectorAll('.env-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.env-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      envFilter = btn.dataset.env;
+      render();
+    });
+  });
+
+  // ========== 프롬프트 추가 모달 ==========
+  window.openPromptModal = function() {
+    selectedPromptModalTags = new Set(['프롬프트']);
+    selectedImageFiles = [];
+    ['pTitleInput','pAuthorInput','pPromptIntroInput','pPromptEnvInput','pPromptTextInput','pPromptTipInput'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('pPinnedInput').checked = false;
+    document.getElementById('uploadPreview').innerHTML = '';
+    document.querySelectorAll('#promptModalTagsContainer .modal-tag').forEach(b => {
+      b.classList.toggle('selected', selectedPromptModalTags.has(b.dataset.tag));
+    });
+    document.getElementById('promptModalBg').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closePromptModal = function() {
+    document.getElementById('promptModalBg').classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  document.getElementById('promptModalBg').addEventListener('click', e => {
+    if (e.target === document.getElementById('promptModalBg')) window.closePromptModal();
+  });
+
+  document.querySelectorAll('#promptModalTagsContainer .modal-tag').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.dataset.tag === '프롬프트') return;
+      if (selectedPromptModalTags.has(btn.dataset.tag)) {
+        selectedPromptModalTags.delete(btn.dataset.tag);
+        btn.classList.remove('selected');
+      } else {
+        selectedPromptModalTags.add(btn.dataset.tag);
+        btn.classList.add('selected');
+      }
+    });
+  });
+
+  window.handleImageSelect = function(e) {
+    selectedImageFiles = [...selectedImageFiles, ...[...e.target.files]];
+    e.target.value = '';
+    renderUploadPreview();
+  };
+
+  function renderUploadPreview() {
+    const preview = document.getElementById('uploadPreview');
+    if (!selectedImageFiles.length) { preview.innerHTML = ''; return; }
+    preview.innerHTML = selectedImageFiles.map((f, i) => `
+      <div class="upload-thumb">
+        <img src="${URL.createObjectURL(f)}" alt="">
+        <button onclick="window._removeImage(${i})">✕</button>
+      </div>`).join('');
+  }
+
+  window._removeImage = function(i) {
+    selectedImageFiles.splice(i, 1);
+    renderUploadPreview();
+  };
+
+  window.savePrompt = async function() {
+    const title = document.getElementById('pTitleInput').value.trim();
+    if (!title) { alert('제목을 입력해주세요'); return; }
+
+    const btn = document.getElementById('pSaveBtn');
+    btn.disabled = true;
+    btn.textContent = selectedImageFiles.length > 0 ? '업로드 중...' : '저장 중...';
+
+    try {
+      const imageUrls = [];
+      for (const file of selectedImageFiles) {
+        const dataUrl = await new Promise((resolve, reject) => {
+          const img = new Image();
+          const reader = new FileReader();
+          reader.onload = e => {
+            img.onload = () => {
+              const MAX = 600;
+              let w = img.width, h = img.height;
+              if (w > MAX || h > MAX) {
+                if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+                else { w = Math.round(w * MAX / h); h = MAX; }
+              }
+              const canvas = document.createElement('canvas');
+              canvas.width = w; canvas.height = h;
+              canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+              resolve(canvas.toDataURL('image/jpeg', 0.65));
+            };
+            img.onerror = () => reject(new Error(`"${file.name}" 이미지를 읽을 수 없습니다`));
+            img.src = e.target.result;
+          };
+          reader.onerror = () => reject(new Error(`"${file.name}" 파일 읽기 실패`));
+          reader.readAsDataURL(file);
+        });
+        if (dataUrl.length > 250 * 1024) {
+          throw new Error(`이미지가 너무 큽니다 (${Math.round(dataUrl.length/1024)}KB)`);
+        }
+        imageUrls.push(dataUrl);
+      }
+      const totalSize = imageUrls.reduce((sum, u) => sum + u.length, 0);
+      if (totalSize > 700 * 1024) {
+        throw new Error(`이미지 총 용량이 너무 큽니다 (${Math.round(totalSize/1024)}KB)`);
+      }
+
+      const tags = [...selectedPromptModalTags];
+      const pinned = document.getElementById('pPinnedInput').checked;
+      const docData = {
+        title,
+        author: document.getElementById('pAuthorInput').value.trim(),
+        tags,
+        images: imageUrls,
+        promptIntro: document.getElementById('pPromptIntroInput').value.trim(),
+        promptEnv: document.getElementById('pPromptEnvInput').value.trim(),
+        promptText: document.getElementById('pPromptTextInput').value.trim(),
+        promptTip: document.getElementById('pPromptTipInput').value.trim(),
+        createdAt: Date.now(),
+        views: 0,
+        likes: 0,
+        commentCount: 0,
+        pinned
+      };
+      if (pinned) docData.pinnedAt = Date.now();
+      await addDoc(colRef, docData);
+      window.closePromptModal();
+    } catch(e) {
+      alert('저장 실패: ' + e.message);
+    }
+
+    btn.disabled = false;
+    btn.textContent = '저장';
+  };
+
+</script>
+</body>
+</html>
