@@ -6,18 +6,20 @@
 <title>프롬프트 갤러리 ✦ hyc</title>
 <style>
   :root {
-    --pink-deep: #d06090;
+    --sky: #5599cc;
+    --sky-light: #88bbdd;
+    --sky-pale: #ddeeff;
+    --bg: #b8d4ec;
+    --card-bg: #ffffff;
+    --border: #aaccee;
+    --border-dark: #7aabcc;
+    --text: #333333;
+    --muted: #778899;
     --pink: #ee88aa;
-    --pink-light: #ffc8dc;
+    --pink-deep: #cc4477;
     --pink-pale: #fff0f6;
     --pink-border: #f0b8d0;
-    --sky: #5599cc;
-    --bg-start: #1a1028;
-    --bg-end: #2a1838;
-    --card-bg: #ffffff;
-    --text: #333333;
-    --text-light: #fff;
-    --muted: #888;
+    --header-bg: linear-gradient(180deg, #f090b0 0%, #f8c8d8 60%, #f0f8ff 100%);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -41,161 +43,152 @@
 
   body {
     font-family: '굴림', 'Gulim', '돋움', 'Dotum', AppleGothic, sans-serif;
-    color: var(--text-light);
+    color: var(--text);
     min-height: 100vh;
-    background:
-      radial-gradient(circle at 20% 10%, rgba(238,136,170,0.2) 0%, transparent 40%),
-      radial-gradient(circle at 80% 90%, rgba(136,187,221,0.15) 0%, transparent 40%),
-      linear-gradient(180deg, var(--bg-start) 0%, var(--bg-end) 100%);
-    background-attachment: fixed;
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px),
+      linear-gradient(180deg, #c8dff4 0%, #b8d4ec 100%);
+    background-size: 18px 18px, 100% 100%;
     font-size: 12px;
   }
 
   /* ===== HEADER ===== */
   header {
-    padding: 20px 24px 10px;
-    position: relative;
-    border-bottom: 1px solid rgba(240,184,208,0.2);
-    background: linear-gradient(180deg, rgba(208,96,144,0.15) 0%, transparent 100%);
-  }
-  .header-top {
+    background: var(--header-bg);
+    padding: 12px 20px;
+    border-bottom: 3px solid #d070a0;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(220,100,150,0.25);
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 6px;
+  }
+  .header-top {
+    display: contents;
   }
   header h1 {
-    font-family: '궁서체', '궁서', GungSeo, serif;
-    font-size: 24px;
+    font-size: 16px;
     font-weight: bold;
-    letter-spacing: 2px;
-    background: linear-gradient(90deg, #fff 0%, #ffc8dc 25%, #fff 50%, #ffc8dc 75%, #fff 100%);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shine 4s linear infinite;
+    color: #ffffff;
+    text-shadow: 1px 1px 0 rgba(180,60,90,0.5), 0 0 12px rgba(255,255,255,0.6);
+    letter-spacing: 1px;
+    white-space: nowrap;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
   }
   header h1 .spark {
+    font-size: 14px;
+    animation: sparkle 1.8s ease-in-out infinite;
     display: inline-block;
-    color: #ffc8dc;
-    -webkit-text-fill-color: #ffc8dc;
-    font-size: 18px;
-    animation: sparkle 2s ease-in-out infinite;
   }
-  header h1 .spark:nth-child(3) { animation-delay: 0.8s; }
+  header h1 .spark:nth-child(3) { animation-delay: 0.6s; }
 
   .header-tagline {
-    font-family: '궁서체', '궁서', serif;
-    font-size: 13px;
-    color: #ffc8dc;
-    opacity: 0.9;
-    font-style: italic;
+    font-family: '궁서체', '궁서', GungSeo, serif;
+    font-size: 18px;
+    color: #8b0018;
+    text-shadow: 1px 1px 0 rgba(255,200,200,0.6);
+    animation: float 3s ease-in-out infinite;
   }
   .header-btn {
-    background: linear-gradient(180deg, #ff7aa8 0%, #e04880 100%);
+    padding: 5px 14px;
+    background: linear-gradient(180deg, #ee9aaa 0%, #cc4466 100%);
     color: #fff;
-    border: 1px solid #c03868;
-    padding: 7px 16px;
-    font-family: '굴림', sans-serif;
+    border-top: 2px solid #ffccdd;
+    border-left: 2px solid #ffccdd;
+    border-right: 2px solid #882244;
+    border-bottom: 2px solid #882244;
+    border-radius: 0;
     font-size: 12px;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 3px;
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.4),
-      0 2px 6px rgba(208,96,144,0.4);
-    text-shadow: 0 1px 0 rgba(160,40,90,0.4);
-    transition: transform 0.12s;
+    white-space: nowrap;
+    font-family: inherit;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+    transition: filter 0.1s;
   }
-  .header-btn:hover { transform: translateY(-1px); }
-  .header-btn:active { transform: translateY(1px); }
+  .header-btn:hover { filter: brightness(1.1); }
+  .header-btn:active {
+    border-top: 2px solid #882244;
+    border-left: 2px solid #882244;
+    border-right: 2px solid #ffccdd;
+    border-bottom: 2px solid #ffccdd;
+  }
 
   /* ===== PAGE NAV ===== */
   .page-nav {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 14px 16px 0;
+    align-items: flex-end;
+    gap: 3px;
+    padding: 12px 20px 0;
+    background: linear-gradient(180deg, #f0f8ff 0%, #e4f0fc 100%);
+    border-top: 2px solid #b0d8f0;
   }
   .page-nav-tab {
-    padding: 6px 16px;
+    padding: 5px 16px;
     font-family: '굴림', sans-serif;
     font-size: 11px;
     font-weight: bold;
-    color: rgba(255,255,255,0.5);
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 3px 3px 0 0;
+    color: #336699;
+    background: #ddeeff;
+    border-top: 2px solid #e0eeff;
+    border-left: 2px solid #e0eeff;
+    border-right: 2px solid #7aabcc;
     border-bottom: none;
     cursor: pointer;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    transition: all 0.15s;
+    transition: background 0.05s;
+    border-radius: 3px 3px 0 0;
   }
-  .page-nav-tab:hover {
-    color: #fff;
-    background: rgba(255,255,255,0.12);
-  }
+  .page-nav-tab:hover { background: #cce0f8; }
   .page-nav-tab.active {
+    background: var(--sky);
     color: #fff;
-    background: linear-gradient(180deg, #d06090 0%, #a03868 100%);
-    border-color: #c03868;
-    padding: 7px 18px;
+    border-top: 2px solid #4488bb;
+    border-left: 2px solid #4488bb;
+    border-right: 2px solid #88ccee;
+    padding: 6px 18px;
     font-size: 12px;
     z-index: 2;
-    box-shadow: 0 -2px 8px rgba(208,96,144,0.3);
-  }
-  .page-nav-tab.active::before {
-    content: "✦";
-    color: #ffc8dc;
-    font-size: 10px;
-    animation: sparkle 2s ease-in-out infinite;
   }
 
   /* ===== CONTROLS ===== */
   .controls {
-    padding: 14px 24px 8px;
+    padding: 10px 20px;
     display: flex;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
     flex-wrap: wrap;
+    background: linear-gradient(180deg, #e4f0fc 0%, #d8ecf8 100%);
+    border-bottom: 2px solid #b0d8f0;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
   }
   .search-wrap {
     flex: 1;
-    min-width: 220px;
+    min-width: 160px;
     max-width: 360px;
     position: relative;
   }
-  .search-wrap::before {
-    content: "🔎";
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 12px;
-    opacity: 0.6;
-  }
   .search-wrap input {
     width: 100%;
-    padding: 8px 12px 8px 32px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 3px;
-    color: #fff;
-    font-family: '굴림', sans-serif;
+    background: #ffffff;
+    border: 2px inset #aaccee;
+    border-radius: 0;
+    padding: 4px 10px;
+    color: var(--text);
     font-size: 12px;
     outline: none;
+    font-family: inherit;
+    box-shadow: inset 1px 1px 3px rgba(100,150,200,0.2);
   }
-  .search-wrap input::placeholder { color: rgba(255,255,255,0.4); }
-  .search-wrap input:focus { border-color: var(--pink); background: rgba(255,255,255,0.12); }
+  .search-wrap input::placeholder { color: #aabbcc; }
+  .search-wrap input:focus { border-color: var(--sky); }
 
   .env-filters {
     display: flex;
@@ -204,56 +197,72 @@
     flex: 1;
   }
   .env-btn {
-    padding: 5px 10px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(240,184,208,0.3);
-    color: rgba(255,255,255,0.7);
-    font-family: '굴림', sans-serif;
+    padding: 3px 9px;
+    border-radius: 0;
+    border-top: 2px solid #e0eeff;
+    border-left: 2px solid #e0eeff;
+    border-right: 2px solid #7aabcc;
+    border-bottom: 2px solid #7aabcc;
+    background: #ddeeff;
+    color: #336699;
     font-size: 11px;
-    border-radius: 12px;
     cursor: pointer;
-    transition: all 0.12s;
+    font-family: inherit;
+    transition: all 0.05s;
+    font-weight: bold;
   }
-  .env-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  .env-btn:hover { background: #cce0f8; }
+  .env-btn:active {
+    border-top: 2px solid #7aabcc;
+    border-left: 2px solid #7aabcc;
+    border-right: 2px solid #e0eeff;
+    border-bottom: 2px solid #e0eeff;
+  }
   .env-btn.active {
-    background: linear-gradient(180deg, #ff7aa8 0%, #d06090 100%);
+    background: var(--sky);
     color: #fff;
-    border-color: #c03868;
-    box-shadow: 0 0 10px rgba(238,136,170,0.4);
+    border-top: 2px solid #4488bb;
+    border-left: 2px solid #4488bb;
+    border-right: 2px solid #88ccee;
+    border-bottom: 2px solid #88ccee;
   }
 
   .sort-select {
-    padding: 6px 10px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: #fff;
-    font-family: '굴림', sans-serif;
+    background: #ddeeff;
+    border-top: 2px solid #e0eeff;
+    border-left: 2px solid #e0eeff;
+    border-right: 2px solid #7aabcc;
+    border-bottom: 2px solid #7aabcc;
+    border-radius: 0;
+    padding: 4px 10px;
+    color: #336699;
     font-size: 11px;
-    border-radius: 3px;
     cursor: pointer;
+    outline: none;
+    font-family: inherit;
+    font-weight: bold;
   }
-  .sort-select option { background: #2a1838; color: #fff; }
 
   /* ===== PINNED RIBBON ===== */
   .pinned-ribbon {
-    margin: 10px 24px 0;
+    margin: 10px 20px 0;
     padding: 10px 14px;
-    background: linear-gradient(135deg, rgba(255,122,168,0.15) 0%, rgba(208,96,144,0.12) 100%);
-    border: 1px solid rgba(255,200,220,0.25);
+    background: linear-gradient(180deg, #fff0f6 0%, #ffe8f2 100%);
+    border: 1px solid var(--pink-border);
     border-radius: 3px;
+    box-shadow: 2px 2px 0 rgba(200,100,150,0.15);
     display: none;
   }
   .pinned-ribbon.show { display: block; }
   .pinned-title {
-    font-family: '궁서체', serif;
     font-size: 12px;
-    color: #ffc8dc;
+    font-weight: bold;
+    color: var(--pink-deep);
     margin-bottom: 8px;
     letter-spacing: 1px;
   }
   .pinned-title .spark {
-    color: #ffc8dc;
-    animation: sparkle 2s ease-in-out infinite;
+    animation: sparkle 1.8s ease-in-out infinite;
     display: inline-block;
   }
   .pinned-scroll {
@@ -271,21 +280,22 @@
     overflow: hidden;
     cursor: pointer;
     position: relative;
-    border: 1.5px solid var(--pink-border);
-    background: #2a1838;
-    transition: transform 0.15s;
+    border: 2px solid var(--pink-border);
+    background: var(--pink-pale);
+    transition: transform 0.15s, border-color 0.15s;
+    box-shadow: 2px 2px 0 rgba(200,100,150,0.2);
   }
-  .pinned-item:hover { transform: scale(1.04); border-color: var(--pink); }
+  .pinned-item:hover { transform: translate(-1px,-1px); border-color: var(--pink); }
   .pinned-item img { width: 100%; height: 100%; object-fit: cover; }
   .pinned-item .pin-overlay {
     position: absolute;
     top: 4px; left: 4px;
-    background: rgba(208,96,144,0.9);
+    background: var(--pink-deep);
     color: #fff;
     font-size: 9px;
     font-weight: bold;
     padding: 2px 6px;
-    border-radius: 8px;
+    border-radius: 0;
   }
   .pinned-placeholder {
     width: 100%;
@@ -293,13 +303,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #3a2048 0%, #2a1838 100%);
+    background: linear-gradient(180deg, var(--sky-pale), #e4f0fc);
     font-size: 30px;
   }
 
   /* ===== MASONRY GRID ===== */
   .masonry {
-    padding: 16px 24px 60px;
+    padding: 16px 20px 60px;
     column-count: 4;
     column-gap: 12px;
   }
@@ -311,26 +321,23 @@
     break-inside: avoid;
     margin-bottom: 12px;
     background: var(--card-bg);
-    border-radius: 4px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
     overflow: hidden;
     cursor: pointer;
     position: relative;
-    transition: transform 0.18s, box-shadow 0.18s;
+    transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
     animation: fadeIn 0.4s ease-out backwards;
-    box-shadow:
-      0 2px 6px rgba(0,0,0,0.2),
-      0 0 0 1px rgba(255,255,255,0.05);
+    box-shadow: 2px 2px 0 #aabbcc, 3px 3px 0 rgba(100,150,200,0.3);
   }
-  .pcard:nth-child(n) { animation-delay: calc(var(--i, 0) * 30ms); }
   .pcard:hover {
-    transform: translateY(-3px);
-    box-shadow:
-      0 6px 20px rgba(0,0,0,0.35),
-      0 0 0 1.5px var(--pink);
+    border-color: #99ccee;
+    box-shadow: 3px 3px 0 #88aacc, 4px 4px 12px rgba(85,153,204,0.25);
+    transform: translate(-1px, -1px);
   }
   .pcard-img-wrap {
     position: relative;
-    background: #f0e5ee;
+    background: var(--sky-pale);
     overflow: hidden;
   }
   .pcard-img {
@@ -344,52 +351,51 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, var(--pink-pale) 0%, #ffe5ee 100%);
+    background: linear-gradient(180deg, var(--sky-pale), #e8f4fc);
     font-size: 38px;
-    color: var(--pink-deep);
+    color: var(--sky);
     gap: 6px;
   }
   .pcard-placeholder-label {
     font-size: 11px;
-    color: var(--pink-deep);
+    color: var(--sky);
     font-weight: bold;
     letter-spacing: 1px;
   }
 
   .pcard-pin {
     position: absolute;
-    top: 8px; left: 8px;
-    background: linear-gradient(135deg, #ff6b9d 0%, #ff8fb8 100%);
+    top: 7px; left: 7px;
+    background: linear-gradient(135deg, #ff4488 0%, #ff88bb 50%, #ff4488 100%);
     color: #fff;
     font-size: 9px;
     font-weight: bold;
-    padding: 3px 8px;
-    border-radius: 10px;
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 6px rgba(220,100,150,0.4);
+    padding: 2px 7px;
+    border-radius: 8px 8px 8px 2px;
     z-index: 3;
+    box-shadow: 1px 2px 4px rgba(200,50,100,0.3);
   }
   .pcard-new {
     position: absolute;
-    top: 8px; right: 8px;
-    background: #fff;
-    color: #c04878;
+    top: 7px; right: 7px;
+    background: linear-gradient(135deg, #ff4488 0%, #ff88bb 50%, #ff4488 100%);
+    color: #fff;
     font-size: 9px;
     font-weight: bold;
     padding: 2px 6px;
-    border-radius: 8px;
+    border-radius: 8px 8px 8px 2px;
     z-index: 3;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    box-shadow: 1px 2px 4px rgba(200,50,100,0.3);
   }
   .pcard-img-count {
     position: absolute;
-    bottom: 8px; right: 8px;
-    background: rgba(0,0,0,0.65);
+    bottom: 6px; right: 6px;
+    background: rgba(85,153,204,0.85);
     color: #fff;
     font-size: 10px;
     padding: 2px 7px;
-    border-radius: 10px;
-    backdrop-filter: blur(4px);
+    border-radius: 0;
+    font-weight: bold;
   }
   .pcard-img-count::before { content: "▣ "; }
 
@@ -397,7 +403,7 @@
   .pcard-hover {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.88) 100%);
+    background: linear-gradient(180deg, transparent 30%, rgba(34,68,136,0.82) 100%);
     color: #fff;
     padding: 10px 12px;
     display: flex;
@@ -416,33 +422,32 @@
   }
   .pcard-hover-env {
     font-size: 10px;
-    color: #ffc8dc;
+    color: var(--sky-pale);
     margin-bottom: 3px;
   }
   .pcard-hover-meta {
     font-size: 10px;
-    color: rgba(255,255,255,0.7);
+    color: rgba(255,255,255,0.8);
     display: flex;
     gap: 8px;
   }
 
   /* cards without images - text only */
   .pcard-text-only {
-    padding: 14px 14px 12px;
+    padding: 12px 12px 10px;
   }
   .pcard-text-only .pcard-text-title {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
-    color: var(--text);
+    color: #225588;
     margin-bottom: 4px;
-    line-height: 1.3;
+    line-height: 1.4;
   }
   .pcard-text-only .pcard-text-env {
     font-size: 10px;
-    color: var(--pink-deep);
-    margin-bottom: 8px;
+    color: var(--sky);
+    margin-bottom: 6px;
     font-weight: bold;
-    letter-spacing: 0.5px;
   }
   .pcard-text-only .pcard-text-preview {
     font-size: 11px;
@@ -452,33 +457,34 @@
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    background: var(--pink-pale);
-    padding: 8px 10px;
-    border-radius: 3px;
+    background: var(--sky-pale);
+    padding: 7px 9px;
+    border-radius: 0;
     font-family: 'Courier New', 'D2Coding', monospace;
-    border-left: 3px solid var(--pink);
+    border-left: 3px solid var(--sky);
   }
   .pcard-text-only .pcard-text-meta {
     font-size: 10px;
     color: var(--muted);
-    margin-top: 8px;
+    margin-top: 7px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-top: 6px;
+    border-top: 1px dashed var(--border);
   }
-  .pcard-text-only .pcard-text-meta .author { color: var(--pink-deep); font-weight: bold; }
+  .pcard-text-only .pcard-text-meta .author { color: var(--sky); font-weight: bold; }
 
   .empty {
-    grid-column: 1 / -1;
     text-align: center;
     padding: 80px 20px;
-    color: rgba(255,255,255,0.5);
+    color: #aabbcc;
     font-size: 13px;
   }
   .status {
     text-align: center;
     padding: 60px 20px;
-    color: rgba(255,255,255,0.6);
+    color: #aabbcc;
     font-size: 13px;
   }
 
@@ -486,8 +492,7 @@
   .detail-bg {
     position: fixed;
     inset: 0;
-    background: rgba(10,6,20,0.88);
-    backdrop-filter: blur(8px);
+    background: rgba(100,150,200,0.55);
     z-index: 1000;
     display: none;
     overflow-y: auto;
@@ -495,43 +500,45 @@
   }
   .detail-bg.open { display: block; }
   .detail-modal {
-    max-width: 1100px;
+    max-width: 1000px;
     margin: 20px auto;
-    background: #1e1428;
-    border-radius: 8px;
+    background: #f0f8ff;
+    border: 2px solid var(--border-dark);
+    border-radius: 6px;
     overflow: hidden;
     position: relative;
-    border: 1px solid rgba(240,184,208,0.25);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-    animation: fadeIn 0.3s ease-out;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.12);
+    animation: fadeIn 0.2s ease-out;
   }
   .detail-close {
     position: absolute;
-    top: 14px; right: 14px;
-    width: 34px; height: 34px;
-    border-radius: 50%;
-    background: rgba(0,0,0,0.5);
-    color: #fff;
-    border: 1px solid rgba(255,255,255,0.2);
-    font-size: 16px;
+    top: 10px; right: 10px;
+    width: 24px; height: 24px;
+    background: #ddeeff;
+    border: 1px solid var(--border-dark);
+    border-radius: 3px;
+    color: var(--sky);
+    font-size: 12px;
     cursor: pointer;
     z-index: 10;
-    backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
     justify-content: center;
+    font-weight: bold;
+    transition: background 0.1s;
   }
-  .detail-close:hover { background: rgba(208,96,144,0.6); }
+  .detail-close:hover { background: var(--sky); color: #fff; }
 
   /* Image section - BIG */
   .detail-hero {
-    background: #0a0614;
+    background: var(--sky-pale);
     padding: 0;
     position: relative;
-    min-height: 300px;
+    min-height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-bottom: 1px solid var(--border);
   }
   .detail-hero-img {
     max-width: 100%;
@@ -540,95 +547,95 @@
     object-fit: contain;
   }
   .detail-hero-placeholder {
-    padding: 80px 20px;
-    font-size: 80px;
-    color: var(--pink-deep);
+    padding: 60px 20px;
+    font-size: 60px;
     opacity: 0.5;
   }
   .detail-hero-empty {
-    padding: 60px 20px;
+    padding: 40px 20px;
     text-align: center;
-    color: rgba(255,255,255,0.5);
-    font-size: 14px;
-    font-style: italic;
+    color: var(--muted);
+    font-size: 13px;
   }
   .carousel-nav {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    background: rgba(0,0,0,0.6);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: #fff;
+    width: 28px; height: 28px;
+    background: rgba(255,255,255,0.85);
+    border: 1px solid var(--border-dark);
+    border-radius: 3px;
+    color: var(--sky);
     font-size: 18px;
     cursor: pointer;
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(4px);
+    font-weight: bold;
+    transition: background 0.1s;
   }
-  .carousel-nav:hover { background: rgba(208,96,144,0.6); }
-  .carousel-nav.prev { left: 12px; }
-  .carousel-nav.next { right: 12px; }
+  .carousel-nav:hover { background: var(--sky); color: #fff; }
+  .carousel-nav.prev { left: 10px; }
+  .carousel-nav.next { right: 10px; }
   .carousel-thumbs {
     display: flex;
     gap: 6px;
-    padding: 10px 14px;
-    background: #150a1e;
+    padding: 8px 12px;
+    background: #e4f0fc;
     overflow-x: auto;
-    border-bottom: 1px solid rgba(240,184,208,0.15);
+    border-bottom: 1px solid var(--border);
   }
   .carousel-thumb {
-    flex: 0 0 60px;
-    height: 60px;
-    border-radius: 3px;
+    flex: 0 0 54px;
+    height: 54px;
+    border-radius: 0;
     overflow: hidden;
     cursor: pointer;
-    border: 2px solid transparent;
-    opacity: 0.5;
+    border: 2px solid var(--border);
+    opacity: 0.6;
     transition: opacity 0.15s, border-color 0.15s;
   }
-  .carousel-thumb.active { opacity: 1; border-color: var(--pink); }
+  .carousel-thumb.active { opacity: 1; border-color: var(--sky); }
   .carousel-thumb:hover { opacity: 1; }
   .carousel-thumb img { width: 100%; height: 100%; object-fit: cover; }
 
   /* Info section */
   .detail-info {
-    padding: 22px 28px 8px;
-    background: #1e1428;
-    color: #fff;
+    padding: 18px 24px 10px;
+    background: #ffffff;
   }
   .detail-tags {
     display: flex;
-    gap: 5px;
+    gap: 4px;
     flex-wrap: wrap;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
   .detail-tag {
     font-size: 10px;
-    padding: 3px 9px;
-    background: rgba(240,184,208,0.18);
-    color: #ffc8dc;
-    border: 1px solid rgba(240,184,208,0.3);
-    border-radius: 10px;
+    font-weight: bold;
+    padding: 2px 9px;
+    background: var(--sky-pale);
+    color: var(--sky);
+    border: 1px solid var(--border);
+    border-radius: 3px;
   }
   .detail-title {
-    font-family: '궁서체', serif;
-    font-size: 22px;
+    font-size: 18px;
     font-weight: bold;
+    color: #224488;
     margin-bottom: 8px;
-    letter-spacing: 0.5px;
-    line-height: 1.3;
+    line-height: 1.4;
+    word-break: break-word;
   }
   .detail-meta {
     display: flex;
-    gap: 14px;
+    gap: 12px;
     flex-wrap: wrap;
     font-size: 11px;
-    color: rgba(255,255,255,0.65);
-    margin-bottom: 14px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--border);
   }
   .detail-meta span { display: inline-flex; align-items: center; gap: 4px; }
   .detail-stats {
@@ -636,131 +643,129 @@
     gap: 10px;
     align-items: center;
     padding: 10px 0;
-    border-top: 1px solid rgba(240,184,208,0.15);
-    border-bottom: 1px solid rgba(240,184,208,0.15);
-    margin-bottom: 16px;
+    border-top: 1px dashed var(--border);
+    border-bottom: 1px dashed var(--border);
+    margin-bottom: 0;
   }
   .like-btn {
-    padding: 7px 14px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(240,184,208,0.3);
-    color: #fff;
-    font-family: '굴림', sans-serif;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 3px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     gap: 5px;
+    font-size: 12px;
+    color: #bb5577;
+    background: linear-gradient(180deg, #fff5f8 0%, #ffe8f0 100%);
+    border-top: 2px solid #ffddee;
+    border-left: 2px solid #ffddee;
+    border-right: 2px solid #cc7799;
+    border-bottom: 2px solid #cc7799;
+    border-radius: 0;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold;
+    transition: filter 0.1s;
   }
-  .like-btn.liked {
-    background: linear-gradient(180deg, #ff7aa8 0%, #d06090 100%);
-    border-color: #c03868;
-    color: #fff;
-  }
-  .like-btn:hover:not(.liked) { background: rgba(255,255,255,0.14); }
-  .stat-item { color: rgba(255,255,255,0.65); font-size: 12px; display: flex; align-items: center; gap: 4px; }
+  .like-btn:hover { filter: brightness(0.95); }
+  .like-btn.liked { background: linear-gradient(180deg, #ffe0ea 0%, #ffccd8 100%); color: #cc4466; }
+  .stat-item { color: var(--muted); font-size: 11px; display: flex; align-items: center; gap: 4px; }
 
   /* Prompt body sections */
   .detail-body {
-    padding: 0 28px 20px;
-    background: #1e1428;
-    color: #fff;
+    padding: 0 24px 20px;
+    background: #ffffff;
+    border-top: 1px solid var(--border);
   }
   .psection {
-    margin-bottom: 18px;
+    margin-top: 16px;
   }
   .psection-title {
     font-size: 11px;
-    color: #ffc8dc;
+    color: var(--sky);
     font-weight: bold;
-    letter-spacing: 1px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-bottom: 1px dotted var(--border);
+    padding-bottom: 4px;
   }
   .psection-title::before {
     content: "✦";
-    margin-right: 6px;
-    opacity: 0.6;
+    margin-right: 5px;
+    opacity: 0.5;
+    font-size: 9px;
   }
   .psection-content {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(240,184,208,0.15);
-    border-radius: 4px;
-    padding: 14px 16px;
-    font-size: 13px;
-    line-height: 1.65;
-    color: rgba(255,255,255,0.92);
+    background: #f8fcff;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 10px 12px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #444;
     white-space: pre-wrap;
     word-break: break-word;
   }
   .psection.prompt-main .psection-content {
-    background: linear-gradient(135deg, rgba(255,122,168,0.08) 0%, rgba(136,187,221,0.05) 100%);
-    border-color: rgba(240,184,208,0.35);
-    font-family: 'Courier New', 'D2Coding', 'Menlo', monospace;
-    font-size: 13px;
+    background: var(--sky-pale);
+    border-color: var(--border-dark);
+    font-family: 'Courier New', 'D2Coding', monospace;
+    font-size: 12px;
     line-height: 1.7;
-    padding: 16px 18px;
-    position: relative;
+    padding: 12px 14px;
+    border-left: 3px solid var(--sky);
   }
   .copy-btn {
-    padding: 4px 12px;
-    background: linear-gradient(180deg, #ff7aa8 0%, #d06090 100%);
-    color: #fff;
-    border: 1px solid #c03868;
-    font-family: '굴림', sans-serif;
-    font-size: 11px;
-    font-weight: bold;
-    cursor: pointer;
+    background: #eef6fc;
+    border: 1px solid var(--border);
     border-radius: 3px;
-    text-transform: none;
-    letter-spacing: 0;
-    box-shadow: 0 2px 4px rgba(208,96,144,0.3);
+    color: var(--sky);
+    font-size: 10px;
+    padding: 2px 8px;
+    cursor: pointer;
+    transition: all 0.1s;
+    font-family: inherit;
+    font-weight: bold;
   }
-  .copy-btn:hover { filter: brightness(1.1); }
-  .copy-btn.copied { background: linear-gradient(180deg, #6cc599 0%, #4ba078 100%); border-color: #3b8060; }
+  .copy-btn:hover { background: var(--sky-pale); }
+  .copy-btn.copied { background: #eeffee; color: #448855; border-color: #99cc99; }
 
   .env-badge {
     display: inline-block;
-    background: rgba(136,187,221,0.2);
-    border: 1px solid rgba(136,187,221,0.4);
-    color: #aaddff;
-    padding: 4px 10px;
+    background: var(--sky-pale);
+    border: 1px solid var(--border-dark);
+    color: var(--sky);
+    padding: 3px 10px;
     border-radius: 3px;
     font-size: 12px;
     font-weight: bold;
-    letter-spacing: 0.5px;
   }
 
   /* Comments */
   .comments-section {
-    padding: 20px 28px 28px;
-    background: #1e1428;
-    border-top: 1px solid rgba(240,184,208,0.15);
+    padding: 0 24px 24px;
+    background: #f8fcff;
+    border-top: 1px solid var(--border);
   }
   .comments-title {
     font-size: 12px;
-    color: #ffc8dc;
+    color: var(--sky);
     font-weight: bold;
+    padding-top: 16px;
     margin-bottom: 12px;
-    letter-spacing: 1px;
   }
-  .comments-title::before { content: "💬 "; }
   .comment-item {
     display: flex;
-    gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px dotted rgba(240,184,208,0.15);
+    gap: 8px;
+    margin-bottom: 10px;
   }
   .comment-avatar {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--pink) 0%, var(--pink-deep) 100%);
-    color: #fff;
+    background: var(--sky-pale);
+    border: 1px solid var(--border);
+    color: var(--sky);
     font-size: 11px;
     font-weight: bold;
     display: flex;
@@ -768,46 +773,65 @@
     justify-content: center;
     flex-shrink: 0;
   }
-  .comment-content { flex: 1; }
-  .comment-author { font-size: 11px; font-weight: bold; color: #ffc8dc; }
-  .comment-text { font-size: 12px; color: rgba(255,255,255,0.88); line-height: 1.5; margin: 3px 0; }
-  .comment-date { font-size: 10px; color: rgba(255,255,255,0.4); }
-  .comment-form { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
-  .comment-form input, .comment-form textarea {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(240,184,208,0.2);
-    color: #fff;
-    padding: 8px 10px;
-    font-family: '굴림', sans-serif;
-    font-size: 12px;
-    border-radius: 3px;
-    outline: none;
+  .comment-content { flex: 1; min-width: 0; }
+  .comment-author { font-size: 11px; font-weight: bold; color: #336699; margin-bottom: 2px; }
+  .comment-text { font-size: 11px; color: #444; line-height: 1.5; word-break: break-word; }
+  .comment-date { font-size: 10px; color: #aabbcc; margin-top: 2px; }
+  .comment-form {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border);
+    display: flex;
+    gap: 6px;
   }
-  .comment-form input { width: 180px; }
-  .comment-form textarea { min-height: 60px; resize: vertical; }
-  .comment-form input:focus, .comment-form textarea:focus { border-color: var(--pink); }
+  .comment-form input {
+    flex: 0 0 90px;
+    background: #fff;
+    border: 1px solid var(--border-dark);
+    border-radius: 3px;
+    padding: 6px 8px;
+    color: var(--text);
+    font-size: 11px;
+    outline: none;
+    font-family: inherit;
+  }
+  .comment-form textarea {
+    flex: 1;
+    background: #fff;
+    border: 1px solid var(--border-dark);
+    border-radius: 3px;
+    padding: 6px 8px;
+    color: var(--text);
+    font-size: 11px;
+    outline: none;
+    resize: none;
+    height: 34px;
+    font-family: inherit;
+  }
+  .comment-form input:focus, .comment-form textarea:focus { border-color: var(--sky); }
   .comment-submit {
-    align-self: flex-end;
-    padding: 6px 16px;
-    background: linear-gradient(180deg, #ff7aa8 0%, #d06090 100%);
+    background: var(--sky);
     color: #fff;
-    border: 1px solid #c03868;
-    font-family: '굴림', sans-serif;
+    border: 1px solid var(--border-dark);
+    border-radius: 3px;
+    padding: 6px 12px;
     font-size: 11px;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 3px;
+    white-space: nowrap;
+    font-family: inherit;
   }
+  .comment-submit:hover { background: #4488bb; }
+
+  #promptModalBg.open { display: flex; }
 
   @media (max-width: 700px) {
-    header { padding: 14px 14px 8px; }
-    header h1 { font-size: 18px; }
-    .header-tagline { font-size: 11px; width: 100%; }
-    .controls { padding: 10px 14px 6px; }
-    .detail-info, .detail-body, .comments-section { padding-left: 16px; padding-right: 16px; }
-    .detail-title { font-size: 18px; }
-    .psection-content { font-size: 12px; padding: 12px; }
-    .pinned-ribbon { margin: 8px 14px 0; }
+    header { padding: 10px 14px; }
+    .controls { padding: 8px 12px; gap: 6px; }
+    .detail-info, .detail-body, .comments-section { padding-left: 14px; padding-right: 14px; }
+    .detail-title { font-size: 15px; }
+    .psection-content { font-size: 11px; padding: 10px; }
+    .pinned-ribbon { margin: 8px 12px 0; }
   }
 </style>
 </head>
@@ -859,76 +883,66 @@
 <div class="masonry" id="masonry" style="display:none"></div>
 
 <!-- ===== Prompt Add Modal ===== -->
-<div class="detail-bg" id="promptModalBg" style="background:rgba(10,6,20,0.85)">
-  <div class="detail-modal" style="max-width:560px">
-    <button class="detail-close" onclick="closePromptModal()">✕</button>
-    <div style="padding:28px">
-      <h2 style="font-family:'궁서체',serif;font-size:20px;color:#fff;margin-bottom:18px">✦ 프롬프트 추가</h2>
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <div>
-          <label style="display:block;font-size:11px;color:#ffc8dc;margin-bottom:4px;font-weight:bold">제목</label>
-          <input type="text" id="pTitleInput" placeholder="프롬프트 제목" style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(240,184,208,0.3);color:#fff;border-radius:3px;font-family:'굴림',sans-serif;font-size:12px;outline:none">
-        </div>
-        <div>
-          <label style="display:block;font-size:11px;color:#ffc8dc;margin-bottom:4px;font-weight:bold">올린 사람 <span style="color:rgba(255,255,255,0.5);font-weight:normal">(선택)</span></label>
-          <input type="text" id="pAuthorInput" placeholder="닉네임..." style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(240,184,208,0.3);color:#fff;border-radius:3px;font-family:'굴림',sans-serif;font-size:12px;outline:none">
-          <div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap">
-            <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='혜인'">혜인</button>
-            <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='문이'">문이</button>
-            <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='센'">센</button>
-            <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='종석'">종석</button>
-            <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='쥐'">쥐</button>
-            <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='헨지'">헨지</button>
-            <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='건우'">건우</button>
-          </div>
-        </div>
-        <div>
-          <label style="display:block;font-size:11px;color:#ffc8dc;margin-bottom:4px;font-weight:bold">태그</label>
-          <div class="modal-tags" id="promptModalTagsContainer" style="display:flex;gap:4px;flex-wrap:wrap">
-            <button class="modal-tag selected" data-tag="프롬프트">프롬프트</button>
-            <button class="modal-tag" data-tag="AI">AI</button>
-            <button class="modal-tag" data-tag="ComfyUI">ComfyUI</button>
-            <button class="modal-tag" data-tag="NAI">NAI</button>
-            <button class="modal-tag" data-tag="미드저니">미드저니</button>
-            <button class="modal-tag" data-tag="NanoBanana">NanoBanana</button>
-            <button class="modal-tag" data-tag="이미지">이미지</button>
-            <button class="modal-tag" data-tag="영상">영상</button>
-            <button class="modal-tag" data-tag="기타">기타</button>
-          </div>
-        </div>
-        <div>
-          <label style="display:block;font-size:11px;color:#ffc8dc;margin-bottom:4px;font-weight:bold">결과물 이미지 <span style="color:rgba(255,255,255,0.5);font-weight:normal">(여러 장 가능)</span></label>
-          <div class="upload-area" onclick="document.getElementById('imageFiles').click()" style="border:1.5px dashed rgba(240,184,208,0.4);padding:18px;text-align:center;color:rgba(255,255,255,0.7);cursor:pointer;border-radius:4px;background:rgba(255,255,255,0.03)">
-            <div style="font-size:22px;margin-bottom:6px">🖼️</div>
-            클릭해서 이미지 선택
-            <input type="file" id="imageFiles" accept="image/*,.heic,.heif" multiple style="display:none" onchange="handleImageSelect(event)">
-          </div>
-          <div class="upload-preview" id="uploadPreview" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"></div>
-        </div>
-        <div>
-          <label style="display:block;font-size:11px;color:#ffc8dc;margin-bottom:4px;font-weight:bold">프롬프트 소개</label>
-          <textarea id="pPromptIntroInput" placeholder="어떤 용도의 프롬프트인지 간단히..." style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(240,184,208,0.3);color:#fff;border-radius:3px;font-family:'굴림',sans-serif;font-size:12px;outline:none;min-height:50px;resize:vertical"></textarea>
-        </div>
-        <div>
-          <label style="display:block;font-size:11px;color:#ffc8dc;margin-bottom:4px;font-weight:bold">실행환경 <span style="color:rgba(255,255,255,0.5);font-weight:normal">(예: DALL-E, ComfyUI, NAI, 미드저니)</span></label>
-          <input type="text" id="pPromptEnvInput" placeholder="실행환경..." style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(240,184,208,0.3);color:#fff;border-radius:3px;font-family:'굴림',sans-serif;font-size:12px;outline:none">
-        </div>
-        <div>
-          <label style="display:block;font-size:11px;color:#ffc8dc;margin-bottom:4px;font-weight:bold">프롬프트</label>
-          <textarea id="pPromptTextInput" placeholder="프롬프트 본문..." style="width:100%;padding:11px 14px;background:rgba(255,122,168,0.05);border:1px solid rgba(240,184,208,0.3);color:#fff;border-radius:3px;font-family:'Courier New',monospace;font-size:12px;outline:none;min-height:120px;resize:vertical;line-height:1.6"></textarea>
-        </div>
-        <div>
-          <label style="display:block;font-size:11px;color:#ffc8dc;margin-bottom:4px;font-weight:bold">활용 팁 <span style="color:rgba(255,255,255,0.5);font-weight:normal">(선택)</span></label>
-          <textarea id="pPromptTipInput" placeholder="사용 팁이나 주의사항..." style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(240,184,208,0.3);color:#fff;border-radius:3px;font-family:'굴림',sans-serif;font-size:12px;outline:none;min-height:50px;resize:vertical"></textarea>
-        </div>
-        <label style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:linear-gradient(135deg,rgba(255,122,168,0.1) 0%,rgba(208,96,144,0.08) 100%);border:1px dashed rgba(240,184,208,0.4);border-radius:3px;cursor:pointer;font-size:12px;color:#ffc8dc;font-weight:bold">
-          <input type="checkbox" id="pPinnedInput" style="cursor:pointer;width:14px;height:14px;accent-color:#e890b0">
-          <span>✦ 혜인님 PICK에 고정</span>
-        </label>
-        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:4px">
-          <button class="header-btn" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);box-shadow:none;text-shadow:none" onclick="closePromptModal()">취소</button>
-          <button class="header-btn" id="pSaveBtn" onclick="savePrompt()">저장</button>
-        </div>
+<div style="display:none;position:fixed;inset:0;background:rgba(100,150,200,0.5);z-index:500;align-items:center;justify-content:center" id="promptModalBg">
+  <div style="background:#f0f8ff;border:2px solid var(--border-dark);border-radius:6px;width:520px;max-width:92vw;max-height:90vh;overflow-y:auto;box-shadow:3px 3px 0 rgba(0,0,0,0.15)">
+    <h2 style="font-size:13px;font-weight:bold;padding:8px 14px;background:var(--header-bg);color:#fff;border-radius:4px 4px 0 0;text-shadow:1px 1px 0 rgba(0,0,0,0.2);margin-bottom:0">프롬프트 추가</h2>
+    <div style="padding:0 16px">
+      <label style="display:block;font-size:11px;color:var(--sky);font-weight:bold;margin-top:14px;margin-bottom:4px">제목</label>
+      <input type="text" id="pTitleInput" placeholder="프롬프트 제목" style="width:100%;background:#fff;border:1px solid var(--border-dark);border-radius:3px;padding:6px 10px;color:var(--text);font-size:12px;outline:none;font-family:inherit">
+
+      <label style="display:block;font-size:11px;color:var(--sky);font-weight:bold;margin-top:12px;margin-bottom:4px">올린 사람 <span style="color:#555;font-weight:normal">(선택)</span></label>
+      <input type="text" id="pAuthorInput" placeholder="닉네임..." style="width:100%;background:#fff;border:1px solid var(--border-dark);border-radius:3px;padding:6px 10px;color:var(--text);font-size:12px;outline:none;font-family:inherit">
+      <div style="display:flex;gap:4px;margin-top:5px;flex-wrap:wrap">
+        <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='혜인'">혜인</button>
+        <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='문이'">문이</button>
+        <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='센'">센</button>
+        <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='종석'">종석</button>
+        <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='쥐'">쥐</button>
+        <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='헨지'">헨지</button>
+        <button type="button" class="author-quick" onclick="document.getElementById('pAuthorInput').value='건우'">건우</button>
+      </div>
+
+      <label style="display:block;font-size:11px;color:var(--sky);font-weight:bold;margin-top:12px;margin-bottom:4px">태그</label>
+      <div class="modal-tags" id="promptModalTagsContainer" style="display:flex;gap:4px;flex-wrap:wrap">
+        <button class="modal-tag selected" data-tag="프롬프트">프롬프트</button>
+        <button class="modal-tag" data-tag="AI">AI</button>
+        <button class="modal-tag" data-tag="ComfyUI">ComfyUI</button>
+        <button class="modal-tag" data-tag="NAI">NAI</button>
+        <button class="modal-tag" data-tag="미드저니">미드저니</button>
+        <button class="modal-tag" data-tag="NanoBanana">NanoBanana</button>
+        <button class="modal-tag" data-tag="이미지">이미지</button>
+        <button class="modal-tag" data-tag="영상">영상</button>
+        <button class="modal-tag" data-tag="기타">기타</button>
+      </div>
+
+      <label style="display:block;font-size:11px;color:var(--sky);font-weight:bold;margin-top:12px;margin-bottom:4px">결과물 이미지 <span style="color:#555;font-weight:normal">(여러 장 가능)</span></label>
+      <div onclick="document.getElementById('imageFiles').click()" style="border:1.5px dashed var(--border-dark);border-radius:3px;padding:18px;text-align:center;cursor:pointer;color:var(--muted);font-size:12px;background:#f8fcff;transition:border-color 0.1s,background 0.1s" onmouseover="this.style.borderColor='var(--sky)';this.style.background='var(--sky-pale)'" onmouseout="this.style.borderColor='var(--border-dark)';this.style.background='#f8fcff'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:6px;display:block;margin-left:auto;margin-right:auto"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        클릭해서 이미지 선택
+        <input type="file" id="imageFiles" accept="image/*,.heic,.heif" multiple style="display:none" onchange="handleImageSelect(event)">
+      </div>
+      <div class="upload-preview" id="uploadPreview" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"></div>
+
+      <label style="display:block;font-size:11px;color:var(--sky);font-weight:bold;margin-top:12px;margin-bottom:4px">프롬프트 소개</label>
+      <textarea id="pPromptIntroInput" placeholder="어떤 용도의 프롬프트인지 간단히..." style="width:100%;background:#fff;border:1px solid var(--border-dark);border-radius:3px;padding:6px 10px;color:var(--text);font-size:12px;outline:none;font-family:inherit;resize:vertical;min-height:55px"></textarea>
+
+      <label style="display:block;font-size:11px;color:var(--sky);font-weight:bold;margin-top:12px;margin-bottom:4px">실행환경 <span style="color:#555;font-weight:normal">(예: ComfyUI, NAI, 미드저니)</span></label>
+      <input type="text" id="pPromptEnvInput" placeholder="실행환경..." style="width:100%;background:#fff;border:1px solid var(--border-dark);border-radius:3px;padding:6px 10px;color:var(--text);font-size:12px;outline:none;font-family:inherit">
+
+      <label style="display:block;font-size:11px;color:var(--sky);font-weight:bold;margin-top:12px;margin-bottom:4px">프롬프트</label>
+      <textarea id="pPromptTextInput" placeholder="프롬프트 본문..." style="width:100%;background:#f8fcff;border:1px solid var(--border-dark);border-radius:3px;padding:8px 10px;color:var(--text);font-size:12px;outline:none;font-family:'Courier New',monospace;resize:vertical;min-height:120px;line-height:1.6;border-left:3px solid var(--sky)"></textarea>
+
+      <label style="display:block;font-size:11px;color:var(--sky);font-weight:bold;margin-top:12px;margin-bottom:4px">활용 팁 <span style="color:#555;font-weight:normal">(선택)</span></label>
+      <textarea id="pPromptTipInput" placeholder="사용 팁이나 주의사항..." style="width:100%;background:#fff;border:1px solid var(--border-dark);border-radius:3px;padding:6px 10px;color:var(--text);font-size:12px;outline:none;font-family:inherit;resize:vertical;min-height:55px"></textarea>
+
+      <label style="display:flex;align-items:center;gap:8px;margin-top:12px;padding:8px 10px;background:linear-gradient(135deg,#fff0f6 0%,#ffe8f2 100%);border:1px dashed var(--pink-border);border-radius:3px;cursor:pointer;font-size:12px;color:var(--pink-deep);font-weight:bold">
+        <input type="checkbox" id="pPinnedInput" style="cursor:pointer;accent-color:var(--pink)">
+        <span>✦ 혜인님 PICK에 고정</span>
+      </label>
+
+      <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:16px;margin-bottom:16px">
+        <button onclick="closePromptModal()" style="padding:5px 14px;background:#eee;border:1px solid #bbb;border-radius:3px;color:#666;font-size:12px;cursor:pointer;font-family:inherit">취소</button>
+        <button id="pSaveBtn" onclick="savePrompt()" style="padding:5px 16px;background:var(--sky);color:#fff;border:1px solid var(--border-dark);border-radius:3px;font-size:12px;font-weight:bold;cursor:pointer;font-family:inherit">저장</button>
       </div>
     </div>
   </div>
@@ -936,38 +950,37 @@
 
 <style>
   .modal-tag {
-    padding: 4px 10px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(240,184,208,0.3);
-    color: rgba(255,255,255,0.75);
-    font-family: '굴림', sans-serif;
-    font-size: 11px;
-    border-radius: 10px;
-    cursor: pointer;
-  }
-  .modal-tag.selected {
-    background: linear-gradient(180deg, #ff7aa8 0%, #d06090 100%);
-    color: #fff;
-    border-color: #c03868;
-  }
-  .author-quick {
     padding: 3px 10px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
-    color: rgba(255,255,255,0.8);
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    background: #ffffff;
+    color: var(--muted);
+    font-size: 11px;
+    cursor: pointer;
     font-family: '굴림', sans-serif;
-    font-size: 10px;
+    transition: all 0.1s;
+  }
+  .modal-tag.selected { background: var(--sky); color: #fff; border-color: var(--border-dark); font-weight: bold; }
+  .author-quick {
+    padding: 2px 10px;
+    font-size: 11px;
+    font-family: '굴림', sans-serif;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(135deg, #f090b0 0%, #ee5588 100%);
+    border: 1px solid #dd4477;
     border-radius: 10px;
     cursor: pointer;
+    transition: filter 0.1s;
   }
-  .author-quick:hover { background: rgba(240,184,208,0.2); color: #fff; }
+  .author-quick:hover { filter: brightness(1.1); }
   .upload-thumb {
     width: 60px;
     height: 60px;
     border-radius: 3px;
     overflow: hidden;
     position: relative;
-    border: 1px solid rgba(240,184,208,0.3);
+    border: 1px solid var(--border-dark);
   }
   .upload-thumb img { width: 100%; height: 100%; object-fit: cover; }
   .upload-thumb button {
@@ -977,9 +990,12 @@
     background: rgba(0,0,0,0.7);
     color: #fff;
     border: none;
-    border-radius: 50%;
+    border-radius: 4px;
     cursor: pointer;
     font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 </style>
 
